@@ -1,6 +1,6 @@
 import Footer from '@/components/Footer'
 
-export default function AdminLayout({children}){
+export default function AdminTemplate({children}){
     return (
         <html>
             <body>
