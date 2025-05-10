@@ -1,5 +1,7 @@
 export default function Page(){
-    return <div>
-        <p>Página de entrada</p>
+    return <div id="body" className="container">
+        <div className="content">
+            <h2>Kaypi wachana</h2>
+        </div>
     </div>
 }

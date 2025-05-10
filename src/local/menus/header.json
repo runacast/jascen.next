@@ -1,0 +1,23 @@
+{
+  "navbar": {
+    "title": "Navbar",
+    "slug": "navbar",
+    "body": [
+      {
+        "order": 1,
+        "title": "Imatikun",
+        "slug": "/imatekun"
+      },
+      {
+        "order": 2,
+        "title": "Ñukuchi",
+        "slug": "/nukuchi"
+      },
+      {
+        "order": 3,
+        "title": "Comunidad",
+        "slug": "/comunidad"
+      }
+    ]
+  }
+}
