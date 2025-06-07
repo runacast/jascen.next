@@ -1,6 +1,6 @@
 import crypto from 'crypto'
 
-const secret = 'my-secrete-phrase', 
+const secret = process.env.SECRET_PHRASE, 
 salt = 'my-salt',
 key = crypto.scryptSync(secret, salt, 32),
 iv = crypto.randomBytes(12)
