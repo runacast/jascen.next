@@ -17,7 +17,7 @@ export async function get(form, field = '_id'){
     if(form){
 
         const fieldVal = form.get(field),
-        index = users.findIndex( user => user._id === fieldVal || user.cod === fieldVal || user.cid === fieldVal )
+        index = users.findIndex( user => user[field] === fieldVal)
         
         if(users[index]) return users[index]
         return {}

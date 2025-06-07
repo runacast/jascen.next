@@ -6,16 +6,16 @@ import { encrypt, decrypt } from '@/lib/crypto'
 
 export async function get(form, field) {
 
-    const date = new Date(), filePath = path.join(process.cwd(), 'src', 'local', 'calendar', date.getFullYear() + '.json')
+    const date = new Date(), filePath = path.join(process.cwd(), 'src', 'local', 'payments', date.getFullYear() + '.json')
+    let list = []
 
     if (fs.existsSync(filePath)) {
 
-        const content = decrypt(JSON.parse(fs.readFileSync(filePath, 'utf8')))
-
-        return JSON.parse(content)
+        //const content = decrypt(JSON.parse(fs.readFileSync(filePath, 'utf8')))
+        //list = JSON.parse(content)
     }
 
-    return null
+    return list
 }
 
 export async function dir(){

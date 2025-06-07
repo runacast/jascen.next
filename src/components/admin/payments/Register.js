@@ -58,8 +58,8 @@ export default function Register({open, data, children}){
         })
 
         startTransition(async () => {
-            form.set('cid', form.get('query'))
             form.set('cod', form.get('query'))
+            form.set('cid', form.get('query'))
             const user = await get(form,'cid')
             setVisible(true)
             if(user._id){

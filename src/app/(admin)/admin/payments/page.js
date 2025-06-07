@@ -13,12 +13,8 @@ export default async function Calendar(){
 
     const payments = await get(),
     allTotal = 0, // Total de todo recaudado este mes
-    current = payments[date.getMonth()]
+    activity = payments[date.getMonth()]
     payments.reverse()
-
-    current.users.forEach((user, index) => {
-        allTotal += user.total
-    })
 
     return <>
     <br></br>
