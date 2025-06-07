@@ -1,0 +1,77 @@
+body{
+	background-color: rgb(249, 249, 249);
+    font-family: Arial;
+}
+
+#header{
+    background-color: black;
+    color: azure;
+}
+
+#header .nav-brand{
+    padding: 10px;
+}
+
+#header .nav-side{
+    padding: 15px;
+}
+
+.session-panel{
+    margin: 0 auto;
+    max-width: 800px;
+}
+
+.modal-background{
+    z-index: 1;
+}
+
+.container .content{
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.table-bill thead{
+    text-transform: uppercase;
+    background-color: rgb(192, 192, 192);
+    color: #000000;
+    display: block;
+}
+
+.table-bill tbody{
+    height: 300px;
+    display: block;
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
+.table-bill tbody tr{
+    border-bottom: 1px solid #c0c0c0;
+}
+
+.table-bill tfoot{
+    display: block;
+}
+
+.section-bill .row-bill{
+    line-height: 30px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.section-bill .sec-bill{
+    
+}
+
+/* Modal style */
+.modal-background .container .content{
+    max-width: 980px;
+    background-color: aliceblue;
+    margin: 0 auto;
+    margin-top: 40px;
+    padding: 20px;
+}
+
+/* other styles */
+.capilalize{
+    text-transform: capitalize;   
+}

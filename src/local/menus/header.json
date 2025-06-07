@@ -5,13 +5,13 @@
     "body": [
       {
         "order": 1,
-        "title": "Imatikun",
-        "slug": "/imatekun"
+        "title": "Boletines",
+        "slug": "/boletines"
       },
       {
         "order": 2,
-        "title": "Ñukuchi",
-        "slug": "/nukuchi"
+        "title": "Nosotros",
+        "slug": "/nosotros"
       },
       {
         "order": 3,

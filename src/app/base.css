@@ -188,7 +188,7 @@ body p{
 
 .col [class*="sec-"]{
 	float:left;
-	display: none;
+	display: block;
 }
 
 .sec-auto{
@@ -494,13 +494,13 @@ img, video, object, embed{
 	display: table;
 }
 
+.field-group label{
+	padding: 9px;
+}
+
 .field-group .top-label{
 	font-size: 12pt;
 	line-height: 20pt;
-}
-
-.field-group label.sp{
-	padding: 9px;
 }
 
 .field-group label.append-right{
@@ -532,6 +532,7 @@ img, video, object, embed{
 .field-group .input-attach:first-child{
 	border-top-right-radius: 0px;
 	border-bottom-right-radius: 0px;
+	border: 1px solid #A9A9A9;
 }
 
 .field-group .input-attach:last-child{
@@ -542,7 +543,6 @@ img, video, object, embed{
 .field-group button.input-attach{
 	border: 1px solid #A9A9A9;
 	cursor: pointer;
-	color: #F00;
 	border-radius: 0px;
 	border-left: 1px;
 }
@@ -694,7 +694,6 @@ img, video, object, embed{
 }
 
 /* Hidden fields */
-
 .none{
 	display: none;
 }
@@ -705,17 +704,16 @@ img, video, object, embed{
 
 /* Table */
 .table{
-	width: 98%;
-	margin: 1%;
+	width: 100%;
+	border-collapse: collapse;
 }
 
-.table td{
+.table td, .table th{
 	padding: 10px;
+	text-align: inherit;
 }
 
 .table thead{
-	background: #F5F5F5;
-	border-top: 10px solid #F00;
 	line-height: 40px;
 }
 

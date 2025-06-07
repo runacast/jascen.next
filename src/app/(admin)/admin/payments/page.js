@@ -1,0 +1,40 @@
+import Form from 'next/form'
+import Register from '@/components/admin/payments/Register'
+import {get} from '@/lib/payments'
+
+export default async function Calendar(){
+
+    const date = new Date()
+
+    const monthTime = new Intl.DateTimeFormat('es-EC', {
+        timeZone: 'America/Bogota',
+        month: 'long'
+    }).format(date);
+
+    const payments = await get(),
+    allTotal = 0, // Total de todo recaudado este mes
+    current = payments[date.getMonth()]
+    payments.reverse()
+
+    current.users.forEach((user, index) => {
+        allTotal += user.total
+    })
+
+    return <>
+    <br></br>
+    <h3>Fecha actual {date.toDateString()}</h3>
+    <Form className='form'>
+        <legend>Registar pagos</legend>
+        <fieldset className='field-group'>
+            <label>Número de cédula o código</label>
+            <input type='text' className='input-attach' name='query' />
+            <Register>Buscar</Register>
+        </fieldset>
+    </Form>
+    <Form className='form'>
+        <table className='table'>
+            
+        </table>
+    </Form>
+    </>
+}
