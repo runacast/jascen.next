@@ -58,11 +58,13 @@ export default function Register({open, data, children}){
         })
 
         startTransition(async () => {
-            form.set('cod', form.get('query'))
-            form.set('cid', form.get('query'))
-            const user = await get(form,'cid')
+            
+            const query = Math.floor(form.get('query'))
+            const user = await get({cod: query})
+
             setVisible(true)
-            if(user._id){
+
+            if(user){
                 setInfo({user,chargeList})
             }else{
                 setInfo({error:true, message:'No se ha encontrado el usuario'})

@@ -1,5 +1,5 @@
 import Form from 'next/form'
-import {post, get, del} from '@/lib/users'
+import {get, post, del} from '@/lib/users'
 import User from '@/components/admin/users/User'
 
 export default async function pageUsers({params, searchParams}) {
@@ -36,7 +36,7 @@ export default async function pageUsers({params, searchParams}) {
                         {users.map((user, index) => (
                             <tr key={index}>
                                 <td>{user.cod}</td>
-                                <td><User open={false} data={user}><a href='#'>{user.surnames} {user.names}</a></User></td>
+                                <td><User open={false} user={user}><a href='#'>{user.surnames} {user.names}</a></User></td>
                                 <td>{user.alias}</td>
                                 <td>{user.cid}</td>
                                 <td>{user.status ? "activo" : "inactivo"}</td>

@@ -2,20 +2,19 @@
 
 import fs from 'fs'
 import path from 'path'
-import { encrypt, decrypt } from '@/lib/crypto'
+import clientPromise from '@/lib/mongodb'
 
-export async function get(form, field) {
+export async function get(form) {
 
-    const date = new Date(), filePath = path.join(process.cwd(), 'src', 'local', 'payments', date.getFullYear() + '.json')
-    let list = []
+    const client = await clientPromise,
+    db = client.db('jascen_man'),
+    collection = db.collection('users')
 
-    if (fs.existsSync(filePath)) {
-
-        //const content = decrypt(JSON.parse(fs.readFileSync(filePath, 'utf8')))
-        //list = JSON.parse(content)
+    if(form){
+        return await collection.findOne(form)
     }
-
-    return list
+    
+    return await collection.find({}).toArray()
 }
 
 export async function dir(){

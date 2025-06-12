@@ -2,39 +2,41 @@
 
 import fs from 'fs'
 import path from 'path'
+import clientPromise from '@/lib/mongodb'
 import { encrypt, decrypt } from '@/lib/crypto'
 
-export async function get(form, field = '_id'){
-
-    const fileUsersPath = path.join(process.cwd(), 'src', 'local', 'users.json')
-    let users = []
-
-    if(fs.existsSync(fileUsersPath)){
-        const content = JSON.parse(fs.readFileSync(fileUsersPath, 'utf8'))
-        users = JSON.parse(decrypt(content))
-    }
+export async function get(form = undefined){
+    
+    const client = await clientPromise,
+    db = client.db('jascen_man'),
+    collection = db.collection('users')
 
     if(form){
+        const user = await collection.findOne(form)
 
-        const fieldVal = form.get(field),
-        index = users.findIndex( user => user[field] === fieldVal)
-        
-        if(users[index]) return users[index]
-        return {}
+        if(user) return {
+            ...user,
+            _id: user._id.toString()
+        }
+        return user
     }
-    
+
+    const users = await collection.find({}).toArray()
+
+    if(users) return users.map(user => ({
+        ...user,
+        _id: user._id.toString()
+    }))
     return users
 }
 
 export async function post(form) {
 
     /* Users */
-    const fileUsersPath = path.join(process.cwd(), 'src', 'local', 'users.json')
-    let users = []
-
-    if(fs.existsSync(fileUsersPath)){
-        users = JSON.parse(decrypt(JSON.parse(fs.readFileSync(fileUsersPath, 'utf8'))))
-    }
+    const client = await clientPromise
+    const db = client.db('jascen_man')
+    const collection = db.collection('users')
+    const users = await collection.find({}).toArray()
     
     let user = {
         _id: form.get('id'),
@@ -49,16 +51,11 @@ export async function post(form) {
     }
     
     if(user._id){ // Update user
-        const index = users.findIndex(data => data._id === form.get('id'))
-        users[index] = user
+        
     }else{ // Add new user
-        user._id = crypto.randomUUID()
         user.cod = users.length + 1
-        users = users.concat(user)
+        await collection.insertOne(user)
     }
-
-    const encryptUsers = encrypt(JSON.stringify(users, null, 2))
-    fs.writeFileSync(fileUsersPath, JSON.stringify(encryptUsers))
 
     return {
         result: `Usuario "${users.length + 1}" creado.`

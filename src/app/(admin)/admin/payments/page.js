@@ -7,14 +7,13 @@ export default async function Calendar(){
     const date = new Date()
 
     const monthTime = new Intl.DateTimeFormat('es-EC', {
-        timeZone: 'America/Bogota',
+        timeZone: 'America/Lima',
         month: 'long'
     }).format(date);
 
     const payments = await get(),
     allTotal = 0, // Total de todo recaudado este mes
     activity = payments[date.getMonth()]
-    payments.reverse()
 
     return <>
     <br></br>
