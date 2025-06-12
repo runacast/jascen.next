@@ -8,7 +8,7 @@ let client;
 let clientPromise;
 
 if (!process.env.MONGODB_URI) {
-  throw new Error('Por favor define MONGODB_URI en tu .env.local');
+  throw new Error('Error uri not defined.');
 }
 
 if (process.env.NODE_ENV === 'development') {
@@ -22,10 +22,6 @@ if (process.env.NODE_ENV === 'development') {
   // En producción sin caché global
   client = new MongoClient(uri, options);
   clientPromise = client.connect();
-}
-
-clientPromise.getID = (val) => {
-  return new ObjectId(val)
 }
 
 export default clientPromise
