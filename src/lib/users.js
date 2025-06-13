@@ -41,7 +41,7 @@ export async function post(form) {
     const db = await mongo()
 
     if(db.statusCode == 500){
-        return {error:"Error connection mongoDB."}
+        return {error:"Error fail connection mongoDB."}
     }
     
     const collection = db.collection('users'),
@@ -58,21 +58,32 @@ export async function post(form) {
         status: true
     }
     
-    if(user._id){ // Update user
-        response = await collection.updateOne({_id: new ObjectId(form.get('id'))},{$set: user})
+    if(form.get('id')){ // Update user
+        response = await collection.updateOne({ _id: new ObjectId(form.get('id')) },{ $set: user })
     }else{ // Add new user
-        user.cod = total
+        user.cod = total + 1
         response = await collection.insertOne(user)
     }
 
     return {
-        result: `Usuario ${total} creado.`
+        result: `Usuario ${user.cod} creado.`
     }
 }
 
 export async function del(form){
 
+    let response
+    
+    const db = await mongo()
+
+    if(db.statusCode == 500){
+        return {error:"Error fail connection mongoDB."}
+    }
+
+    const collection = db.collection('users')
+    response = await collection.deleteOne({ _id: new ObjectId(form.get('id')) })
+
     return {
-        result : 'Eliminado'
+        deletes : response.deletedCount
     }
 }
