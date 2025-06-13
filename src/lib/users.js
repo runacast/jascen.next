@@ -2,32 +2,38 @@
 
 import fs from 'fs'
 import path from 'path'
-import clientPromise from '@/lib/mongodb'
+import mongo from '@/lib/mongodb'
 import { encrypt, decrypt } from '@/lib/crypto'
 
 export async function get(form = undefined){
     
-    const client = await clientPromise,
-    db = client.db('jascen_man'),
-    collection = db.collection('users')
+    try{
+        const db = await mongo()
+        const collection = db.collection('users')
+        if (form) {
+            const user = await collection.findOne(form)
 
-    if(form){
-        const user = await collection.findOne(form)
+            if (user) return {
+                ...user,
+                _id: user._id.toString()
+            }
+            return user
+        }
 
-        if(user) return {
+        const users = await collection.find({}).toArray()
+
+        if (users) return users.map(user => ({
             ...user,
             _id: user._id.toString()
-        }
-        return user
+        }))
+
+        return users
+
+    }catch(e){
+        console.error(e)
     }
 
-    const users = await collection.find({}).toArray()
-
-    if(users) return users.map(user => ({
-        ...user,
-        _id: user._id.toString()
-    }))
-    return users
+    
 }
 
 export async function post(form) {
