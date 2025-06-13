@@ -7,38 +7,32 @@ import { encrypt, decrypt } from '@/lib/crypto'
 
 export async function get(form = undefined){
     
-    try{
-        const db = await mongo()
-        
-        if(!db){
-            throw new Error("Mongo not available.")
-            return []
-        }
+    const db = await mongo()
 
-        const collection = db.collection('users')
-        if (form) {
-            const user = await collection.findOne(form)
-
-            if (user) return {
-                ...user,
-                _id: user._id.toString()
-            }
-            return user
-        }
-
-        const users = await collection.find({}).toArray()
-
-        if (users) return users.map(user => ({
-            ...user,
-            _id: user._id.toString()
-        }))
-
-        return users
-
-    }catch(e){
-        console.error(e)
+    if (!db) {
+        console.warn("MongoDB connection skipped in Netlify build");
+        return []
     }
 
+    const collection = db.collection('users')
+    if (form) {
+        const user = await collection.findOne(form)
+
+        if (user) return {
+            ...user,
+            _id: user._id.toString()
+        }
+        return user
+    }
+
+    const users = await collection.find({}).toArray()
+
+    if (users) return users.map(user => ({
+        ...user,
+        _id: user._id.toString()
+    }))
+
+    return users
     
 }
 
@@ -79,15 +73,6 @@ export async function post(form) {
 }
 
 export async function del(form){
-
-    const fileUsersPath = path.join(process.cwd(), 'src', 'local', 'users.json'),
-    users = JSON.parse(decrypt(JSON.parse(fs.readFileSync(fileUsersPath, 'utf8')))),
-    index = users.findIndex(data => data._id === form.get('id'))
-
-    if(users[index]){
-        users.splice(index, 1)
-        fs.writeFileSync(fileUsersPath, JSON.stringify(encrypt(JSON.stringify(users, null, 2))))
-    }
 
     return {
         result : 'Eliminado'

@@ -1,8 +1,5 @@
 import { MongoClient } from 'mongodb'
 
-const uri = process.env.MONGODB_URI
-const options = {}
-
 export default async function(){
 
   let client, clientPromise
@@ -12,7 +9,10 @@ export default async function(){
     return null;
   }
 
-  if (!process.env.MONGODB_URI) {
+  const uri = process.env.MONGODB_URI
+  const options = {}
+
+  if (!uri) {
     throw new Error('Error uri not defined.')
   }
 
@@ -32,6 +32,6 @@ export default async function(){
   if(clientPromise){
     return (await clientPromise).db('jascen_man')
   }
-  
+
   return null
 }
