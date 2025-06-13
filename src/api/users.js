@@ -19,6 +19,6 @@ const handler = async (event) => {
     }
 }
 
-export {
+export default {
     handler
 }
