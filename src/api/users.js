@@ -4,6 +4,7 @@ const mongoClient = new MongoClient(process.env.MONGODB_URI)
 const clientPromise = mongoClient.connect()
 
 const handler = async (event) => {
+
     try {
         const database = (await clientPromise).db('jascen_man')
         const collection = database.collection('users')
@@ -16,6 +17,7 @@ const handler = async (event) => {
     } catch (error) {
         return { statusCode: 500, body: error.toString() }
     }
+    
 }
 
 export { handler }

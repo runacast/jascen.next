@@ -1,15 +1,22 @@
 'use server'
 
-import mongo from '@/lib/mongodb'
+//import mongo from '@/lib/mongodb'
+import { MongoClient } from 'mongodb'
+
+const mongoClient = new MongoClient(process.env.MONGODB_URI)
+const clientPromise = mongoClient.connect()
 
 export async function get(form = undefined){
+
     
-    const db = await mongo()
+    const db = (await clientPromise).db('jascen_man')
+    
+    /*const db = await mongo()
 
     if (!db) {
         console.warn("MongoDB connection skipped in Netlify build");
         return []
-    }
+    }*/
 
     const collection = db.collection('users')
     if (form) {
@@ -36,7 +43,7 @@ export async function get(form = undefined){
 export async function post(form) {
 
     /* Users */
-    const db = await mongo()
+    /*const db = await mongo()
 
     if(!db){
         return {error:"Mongo not available"}
@@ -62,10 +69,10 @@ export async function post(form) {
     }else{ // Add new user
         user.cod = users.length + 1
         await collection.insertOne(user)
-    }
+    }*/
 
     return {
-        result: `Usuario "${users.length + 1}" creado.`
+        result: `Usuario creado.`
     }
 }
 
