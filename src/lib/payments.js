@@ -8,8 +8,14 @@ export async function get(form) {
 
     try{
 
-        const db = await mongo(),
-            collection = db.collection('users')
+        const db = await mongo()
+
+        if(!db){
+            throw new Error("Mongo not available.")
+            return []
+        }
+
+        const collection = db.collection('users')
 
         if (form) {
             return await collection.findOne(form)

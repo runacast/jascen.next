@@ -9,6 +9,12 @@ export async function get(form = undefined){
     
     try{
         const db = await mongo()
+        
+        if(!db){
+            throw new Error("Mongo not available.")
+            return []
+        }
+
         const collection = db.collection('users')
         if (form) {
             const user = await collection.findOne(form)
@@ -39,8 +45,12 @@ export async function get(form = undefined){
 export async function post(form) {
 
     /* Users */
-    const client = await clientPromise
-    const db = client.db('jascen_man')
+    const db = await mongo()
+
+    if(!db){
+        return {error:"Mongo not available"}
+    }
+    
     const collection = db.collection('users')
     const users = await collection.find({}).toArray()
     

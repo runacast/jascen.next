@@ -32,5 +32,6 @@ export default async function(){
   if(clientPromise){
     return (await clientPromise).db('jascen_man')
   }
+  
   return null
 }
