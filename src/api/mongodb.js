@@ -6,7 +6,7 @@ const clientPromise = mongoClient.connect()
 export default async function(event){
 
   try {
-    const database = (await clientPromise).db('jascen_man')
+    const database = (await clientPromise).db(process.env.DBNAME)
     return database
   }catch(error){
     return { statusCode: 500, body: error.toString() }

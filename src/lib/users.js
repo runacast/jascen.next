@@ -40,7 +40,7 @@ export async function post(form) {
     let response
     const db = await mongo()
 
-    if(db.statusCode == 500){
+    if (db.statusCode == 500) {
         return {error:"Error fail connection mongoDB."}
     }
     
@@ -48,11 +48,11 @@ export async function post(form) {
     total = await collection.countDocuments()
     
     let user = {
-        cod: form.get('codigo'),
+        cod: parseInt(form.get('codigo'), 10),
         surnames: form.get('apellidos'),
         names: form.get('nombres'),
         alias: form.get('apodo'),
-        cid: form.get('cedula_id'),
+        cid: parseInt(form.get('cedula_id'), 10),
         phone: form.get('telefono'),
         email: form.get('correo'),
         status: true

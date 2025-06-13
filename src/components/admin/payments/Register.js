@@ -1,7 +1,7 @@
 'use client'
 
 import { post,del } from '@/lib/payments'
-import { useState,useTransition } from 'react'
+import { useState, useTransition } from 'react'
 import { get } from '@/lib/users'
 
 const INI_YEAR = 2015
@@ -60,7 +60,7 @@ export default function Register({open, data, children}){
         startTransition(async () => {
             
             const query = Math.floor(form.get('query'))
-            const user = await get({cod: query})
+            const user = await get({cod: 1})
 
             setVisible(true)
 

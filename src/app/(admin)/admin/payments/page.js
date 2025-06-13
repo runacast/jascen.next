@@ -1,6 +1,6 @@
 import Form from 'next/form'
 import Register from '@/components/admin/payments/Register'
-import {get} from '@/lib/payments'
+import { get } from '@/lib/payments'
 
 export default async function Calendar(){
 

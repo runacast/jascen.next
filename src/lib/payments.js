@@ -11,14 +11,25 @@ export async function get(form) {
         return []
     }
 
-    const collection = db.collection('users')
+    const collection = db.collection('payments')
 
     if (form) {
-        return await collection.findOne(form)
+        const payment = await collection.findOne(form)
+        if (payment) return {
+            ...payment,
+            _id: payment._id.toString()
+        }
+        return payment
     }
-
-    return await collection.find({}).toArray()
     
+    const payments = await collection.find({}).toArray()
+
+    if (payments) return payments.map(user => ({
+        ...payment,
+        _id: payment._id.toString()
+    }))
+
+    return payments
 }
 
 export async function dir(){

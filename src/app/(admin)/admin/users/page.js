@@ -1,5 +1,5 @@
 import Form from 'next/form'
-import {get, post, del} from '@/lib/users'
+import { get } from '@/lib/users'
 import User from '@/components/admin/users/User'
 
 export default async function pageUsers({params, searchParams}) {
