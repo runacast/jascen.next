@@ -10,7 +10,7 @@ if (!process.env.MONGODB_URI) {
   throw new Error('Error uri not defined.')
 }
 
-if (process.env.NODE_ENV === 'development') {
+if (process.env.APP_RELEASE === 'development') {
   // Guardar conexión en caché
   if (!global._mongoClientPromise) {
     client = new MongoClient(uri, options)
