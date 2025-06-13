@@ -1,10 +1,20 @@
-import { Handler, HandlerEvent, HandlerContext } from "@netlify/functions"
+import { MongoClient } from 'mongodb'
 
-const handler = async (event, context) => {
-    const value = 'Netlify value'
-    return {
-        statusCode: 200,
-        body: JSON.stringify({ message: `Value of MY_IMPORTANT_VARIABLE is ${value}.`}),
+const mongoClient = new MongoClient(process.env.MONGODB_URI)
+const clientPromise = mongoClient.connect()
+
+const handler = async (event) => {
+    try {
+        const database = (await clientPromise).db('jascen_man')
+        const collection = database.collection('users')
+        // Function logic here ...
+        const results = await collection.find({}).limit(10).toArray()
+        return {
+            statusCode: 200,
+            body: JSON.stringify(results),
+        }
+    } catch (error) {
+        return { statusCode: 500, body: error.toString() }
     }
 }
 
