@@ -2,19 +2,25 @@
 
 import fs from 'fs'
 import path from 'path'
-import clientPromise from '@/lib/mongodb'
+import mongo from '@/lib/mongodb'
 
 export async function get(form) {
 
-    const client = await clientPromise,
-    db = client.db('jascen_man'),
-    collection = db.collection('users')
+    try{
 
-    if(form){
-        return await collection.findOne(form)
+        const db = await mongo(),
+            collection = db.collection('users')
+
+        if (form) {
+            return await collection.findOne(form)
+        }
+
+        return await collection.find({}).toArray()
+
+    }catch(e){
+        console.error(e)
     }
     
-    return await collection.find({}).toArray()
 }
 
 export async function dir(){
