@@ -1,13 +1,14 @@
 'use server'
 
-import mongo from '@/lib/mongodb'
+import mongo from '@/api/mongodb'
+import { ObjectId } from 'mongodb';
 
 export async function get(form = undefined){
-    
+
     const db = await mongo()
 
-    if (!db) {
-        console.warn("MongoDB connection skipped in Netlify build");
+    if (db.statusCode == 500) {
+        console.warn("Error fail connection mongoDB.");
         return []
     }
 
@@ -36,17 +37,17 @@ export async function get(form = undefined){
 export async function post(form) {
 
     /* Users */
-    /*const db = await mongo()
+    let response
+    const db = await mongo()
 
-    if(!db){
-        return {error:"Mongo not available"}
+    if(db.statusCode == 500){
+        return {error:"Error connection mongoDB."}
     }
     
-    const collection = db.collection('users')
-    const users = await collection.find({}).toArray()
+    const collection = db.collection('users'),
+    total = await collection.countDocuments()
     
     let user = {
-        _id: form.get('id'),
         cod: form.get('codigo'),
         surnames: form.get('apellidos'),
         names: form.get('nombres'),
@@ -58,14 +59,14 @@ export async function post(form) {
     }
     
     if(user._id){ // Update user
-        
+        response = await collection.updateOne({_id: new ObjectId(form.get('id'))},{$set: user})
     }else{ // Add new user
-        user.cod = users.length + 1
-        await collection.insertOne(user)
-    }*/
+        user.cod = total
+        response = await collection.insertOne(user)
+    }
 
     return {
-        result: `Usuario creado.`
+        result: `Usuario ${total} creado.`
     }
 }
 

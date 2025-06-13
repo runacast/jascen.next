@@ -38,7 +38,7 @@ body{
 }
 
 .table-bill tbody{
-    height: 300px;
+    height: 500px;
     display: block;
     overflow-y: auto;
     overflow-x: auto;

@@ -1,12 +1,12 @@
 'use server'
 
-import mongo from '@/lib/mongodb'
+import mongo from '@/api/mongodb'
 
 export async function get(form) {
 
     const db = await mongo()
 
-    if (!db) {
+    if (db.statusCode == 500) {
         console.warn("MongoDB connection skipped in Netlify build")
         return []
     }

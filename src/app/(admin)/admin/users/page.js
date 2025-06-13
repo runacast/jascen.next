@@ -5,8 +5,6 @@ import User from '@/components/admin/users/User'
 export default async function pageUsers({params, searchParams}) {
 
     const users = await get()
-
-    console.log(users)
     
     return <>
         <Form className='form'>
