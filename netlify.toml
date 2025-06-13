@@ -1,2 +1,2 @@
-[functions]
-  directory = "api/"
+[build]
+  functions = "src/api"
