@@ -1,22 +1,15 @@
 'use server'
 
-//import mongo from '@/lib/mongodb'
-import { MongoClient } from 'mongodb'
-
-const mongoClient = new MongoClient(process.env.MONGODB_URI)
-const clientPromise = mongoClient.connect()
+import mongo from '@/lib/mongodb'
 
 export async function get(form = undefined){
-
     
-    const db = (await clientPromise).db('jascen_man')
-    
-    /*const db = await mongo()
+    const db = await mongo()
 
     if (!db) {
         console.warn("MongoDB connection skipped in Netlify build");
         return []
-    }*/
+    }
 
     const collection = db.collection('users')
     if (form) {
