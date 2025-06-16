@@ -1,6 +1,6 @@
 'use server'
 
-const baseUrl = process.env.URL || process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+const baseUrl = process.env.URL || process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:8888'
 
 export async function get(form){
 
@@ -48,6 +48,18 @@ export async function post(form) {
 }
 
 export async function del(form) {
+
+    if (form){
+        payload = Object.fromEntries(form.entries())
+    }
+
+    const response = await fetch(`${baseUrl}/.netlify/functions/users`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    })
+
+    if (!response.ok) throw new Error('Error delete user')
 
     return null
 }
