@@ -6,9 +6,9 @@ const clientPromise = mongoClient.connect()
 export default async function(event){
 
   try {
-    const database = (await clientPromise).db(process.env.DBNAME)
+    const database = (await clientPromise).db(process.env.MONGODB_DATABASE)
 
-    const collection = database.collection('users')
+    const collection = database.collection(process.env.MONGODB_COLLECTION)
 
     const users = await collection.find({}).toArray()
 

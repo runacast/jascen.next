@@ -6,7 +6,7 @@ const clientPromise = mongoClient.connect()
 export default async function(event){
 
   try {
-    const database = (await clientPromise).db(process.env.DBNAME)
+    const database = (await clientPromise).db(process.env.MONGODB_DATABASE)
     return database
   }catch(error){
     return { statusCode: 500, body: error.toString() }
