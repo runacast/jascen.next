@@ -12,8 +12,10 @@ export default async function(event){
 
     const users = await collection.find({}).toArray()
 
-    return users
-    
+    return {
+        body: JSON.stringify(users)
+    }
+
   }catch(error){
     return { statusCode: 500, body: error.toString() }
   }
