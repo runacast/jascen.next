@@ -13,7 +13,11 @@ const handler = async function(event){
     const users = await collection.find({}).toArray()
 
     return {
-        body: JSON.stringify(users)
+      statusCode: 200,
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(users)
     }
 
   }catch(error){
