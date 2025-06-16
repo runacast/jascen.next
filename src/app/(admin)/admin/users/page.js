@@ -5,26 +5,9 @@ import User from '@/components/admin/users/User'
 export default async function pageUsers({params, searchParams}) {
 
     const users = await get()
-
-    const handleSubmit = async (e) => {
-        e.preventDefault()
-        const form = new FormData(e.target)
-        try {
-            await post(form)
-            alert('Usuario guardado')
-            setVisible(false)
-        } catch (err) {
-            console.error('Error al guardar:', err)
-            alert('Ocurrió un error al guardar el usuario')
-        }
-    }
     
     return <>
-        <Form className='form' onSubmit={handleSubmit}>
-            <fieldset>
-                <User open={false}><button type='button' className='btn btn-form'>Añadir usuario</button></User>
-            </fieldset>
-        </Form>
+        <User open={false}><button type='button' className='btn btn-form'>Añadir usuario</button></User>
         <Form className='form' action={get}>
             <fieldset>
                 <div className='field-group'>
