@@ -52,8 +52,21 @@ export async function post(form) {
     const database = (await clientPromise).db(process.env.MONGODB_DATABASE)
 
     const collection = database.collection(process.env.MONGODB_COLLECTION)
+
+    const user = {
+      cod: 23,
+      surnames: 'Jaminez',
+      names: 'Darwin',
+      alias: '""',
+      cid: 230409494,
+      phone: '039382838',
+      email: '',
+      status: true
+    }
+
+    const resp = await collection.insertOne(user)
     
-    let response, user = {
+    /*let response, user = {
         cod: parseInt(form.get('codigo'), 10),
         surnames: form.get('apellidos'),
         names: form.get('nombres'),
@@ -69,10 +82,10 @@ export async function post(form) {
     }else{ // Add new user
         user.cod = total + 1
         response = await collection.insertOne(user)
-    }
+    }*/
 
     return {
-        result: `Usuario ${user.cod} creado.`
+        result: `Usuario creado.`
     }
 }
 
