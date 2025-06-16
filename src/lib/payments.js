@@ -1,10 +1,8 @@
 'use server'
 
-import mongo from '@/api/mongodb'
+export async function listOne(form) {
 
-export async function get(form) {
-
-    const db = await mongo()
+    /*const db = await mongo()
 
     if (db.statusCode == 500) {
         console.warn("MongoDB connection skipped in Netlify build")
@@ -27,11 +25,11 @@ export async function get(form) {
     if (payments) return payments.map(user => ({
         ...payment,
         _id: payment._id.toString()
-    }))
+    }))*/
 
-    return payments
+    return {}
 }
 
-export async function dir(){
+export async function list(){
     
 }

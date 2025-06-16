@@ -1,19 +1,8 @@
 'use server'
 
-import mongo from '@/api/mongodb'
-import { MongoClient } from 'mongodb'
-
 export async function get(form = undefined){
-
-    const db = await mongo()
-
-    if (db.statusCode == 500) {
-        console.warn("Error fail connection mongoDB.");
-        return []
-    }
-
-    const collection = db.collection('users')
-    if (form) {
+    
+    /*if (form) {
         const user = await collection.findOne(form)
 
         if (user) return {
@@ -28,13 +17,38 @@ export async function get(form = undefined){
     if (users) return users.map(user => ({
         ...user,
         _id: user._id.toString()
-    }))
+        }))*/
+    let payload = {}
 
-    return users
+    if(form){
+        payload = Object.fromEntries(form.entries())
+    }
+    
+    const response = await fetch('/.netlify/functions/users', {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    })
+    
+    if (!response.ok) throw new Error('Error get users')
+    return await res.json()
     
 }
 
 export async function post(form) {
+
+    if(form){
+        payload = Object.fromEntries(form.entries())
+    }
+
+    const response = await fetch('/.netlify/functions/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    })
+
+    if (!response.ok) throw new Error('Error get users')
+    return await res.json()
 
     /* Users */
     /*let response
@@ -45,26 +59,9 @@ export async function post(form) {
     }
     
     const collection = db.collection('users'),
-    total = await collection.countDocuments()*/
-    const client = new MongoClient(process.env.MONGODB_URI)
-    const db = (await client.connect()).db()
-
-    const collection = db.collection(process.env.MONGODB_COLLECTION)
-
-    const user = {
-      cod: 23,
-      surnames: 'Jaminez',
-      names: 'Darwin',
-      alias: '""',
-      cid: 230409494,
-      phone: '039382838',
-      email: '',
-      status: true
-    }
-
-    const resp = await collection.insertOne(user)
+    total = await collection.countDocuments()
     
-    /*let response, user = {
+    let user = {
         cod: parseInt(form.get('codigo'), 10),
         surnames: form.get('apellidos'),
         names: form.get('nombres'),
@@ -81,15 +78,11 @@ export async function post(form) {
         user.cod = total + 1
         response = await collection.insertOne(user)
     }*/
-
-    return {
-        result: `Usuario creado.`
-    }
 }
 
 export async function del(form){
 
-    /*let response
+    let response
     
     const db = await mongo()
 
@@ -102,5 +95,5 @@ export async function del(form){
 
     return {
         deletes : response.deletedCount
-    }*/
+    }
 }
