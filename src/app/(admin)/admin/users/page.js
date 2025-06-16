@@ -2,8 +2,8 @@ import Form from 'next/form'
 import { get } from '@/lib/users'
 import User from '@/components/admin/users/User'
 
-export default async function pageUsers({params, searchParams}) {
-    // Esto ahora funciona porque es un Server Component
+export default async function adminUsers({params, searchParams}) {
+    
     const users = await get()
     
     return <>

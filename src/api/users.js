@@ -19,7 +19,12 @@ export const handler = async (event) => {
         }))
         return {
           statusCode: 200,
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 
+            'Content-Type': 'application/json', 
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE' 
+          },
           body: JSON.stringify(sanitizedUsers)
         }
       }
@@ -37,7 +42,10 @@ export const handler = async (event) => {
 
         return {
           statusCode: 201,
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+          },
           body: JSON.stringify({ message: 'User inserted', data })
         }
       }
@@ -59,7 +67,10 @@ export const handler = async (event) => {
 
         return {
           statusCode: 200,
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 
+            'Content-Type': 'application/json', 
+            'Access-Control-Allow-Origin': '*' 
+          },
           body: JSON.stringify({ message: 'User updated', result })
         }
       }
@@ -77,7 +88,10 @@ export const handler = async (event) => {
 
         return {
           statusCode: 200,
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+          },
           body: JSON.stringify({ message: 'User deleted', deletedCount: result.deletedCount })
         }
       }
@@ -85,7 +99,10 @@ export const handler = async (event) => {
       default:
         return {
           statusCode: 405,
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+           },
           body: JSON.stringify({ error: 'Method Not Allowed' })
         }
     }

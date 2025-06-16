@@ -1,8 +1,8 @@
 'use client'
 
+import Form from 'next/form'
 import { useState } from 'react'
-import Form from 'next/form' // Importación añadida
-import { del, post } from '@/lib/users' // Importación de post añadida
+import { del, post } from '@/lib/users'
 
 export default function Modal({open, user = {}, children}){
 
@@ -24,6 +24,7 @@ export default function Modal({open, user = {}, children}){
     }
 
     const handleDelete = async () => {
+        
         if (!confirm('¿Estás seguro de que quieres eliminar este usuario?')) {
             return
         }
