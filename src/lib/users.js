@@ -1,6 +1,10 @@
 'use server'
 
+const baseUrl = process.env.URL || 'http://localhost:3000'
+
 export async function get(form = undefined){
+
+    
     
     /*if (form) {
         const user = await collection.findOne(form)
@@ -23,15 +27,19 @@ export async function get(form = undefined){
     if(form){
         payload = Object.fromEntries(form.entries())
     }
+
+    const url = new URL('/.netlify/functions/users', baseUrl)
+    Object.entries(payload).forEach(([key, value]) =>
+        url.searchParams.append(key, value)
+    )
     
-    const response = await fetch('/.netlify/functions/users', {
+    const response = await fetch(url.toString(), {
         method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        headers: { 'Content-Type': 'application/json' }
     })
     
     if (!response.ok) throw new Error('Error get users')
-    return await res.json()
+    return await response.json()
     
 }
 
@@ -41,14 +49,14 @@ export async function post(form) {
         payload = Object.fromEntries(form.entries())
     }
 
-    const response = await fetch('/.netlify/functions/users', {
+    const response = await fetch(`${baseUrl}/.netlify/functions/users`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
     })
 
     if (!response.ok) throw new Error('Error get users')
-    return await res.json()
+    return await response.json()
 
     /* Users */
     /*let response
