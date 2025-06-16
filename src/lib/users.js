@@ -46,11 +46,10 @@ export async function post(form) {
     
     const collection = db.collection('users'),
     total = await collection.countDocuments()*/
-    const mongoClient = new MongoClient(process.env.MONGODB_URI)
-    const clientPromise = mongoClient.connect()
-    const database = (await clientPromise).db(process.env.MONGODB_DATABASE)
+    const client = new MongoClient(process.env.MONGODB_URI)
+    const db = (await client.connect()).db()
 
-    const collection = database.collection(process.env.MONGODB_COLLECTION)
+    const collection = db.collection(process.env.MONGODB_COLLECTION)
 
     const user = {
       cod: 23,
