@@ -3,7 +3,7 @@ import { MongoClient } from 'mongodb'
 const mongoClient = new MongoClient(process.env.MONGODB_URI)
 const clientPromise = mongoClient.connect()
 
-export default async function(event){
+const handler = async function(event){
 
   try {
     const database = (await clientPromise).db(process.env.MONGODB_DATABASE)
@@ -20,4 +20,8 @@ export default async function(event){
     return { statusCode: 500, body: error.toString() }
   }
 
+}
+
+export {
+  handler
 }
