@@ -1,5 +1,3 @@
-// /src/api/users.js (función de Netlify)
-
 import { MongoClient, ObjectId } from 'mongodb'
 
 const mongoClient = new MongoClient(process.env.MONGODB_URI)
@@ -14,35 +12,18 @@ export const handler = async (event) => {
 
     switch (method) {
       case 'GET': {
-        // Obtener parámetros de búsqueda
-        const searchValue = event.queryStringParameters?.search || ''
-        
-        let query = {}
-        if (searchValue) {
-          // Buscar en múltiples campos
-          query = {
-            $or: [
-              { surnames: { $regex: searchValue, $options: 'i' } },
-              { names: { $regex: searchValue, $options: 'i' } },
-              { alias: { $regex: searchValue, $options: 'i' } },
-              { cid: { $regex: searchValue, $options: 'i' } }
-            ]
-          }
-        }
-        
-        const users = await collection.find(query).toArray()
+        const users = await collection.find({}).toArray()
         const sanitizedUsers = users.map(user => ({
           ...user,
           _id: user._id.toString()
         }))
-        
         return {
           statusCode: 200,
           headers: { 
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json', 
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Headers': 'Content-Type',
-            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE'
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE' 
           },
           body: JSON.stringify(sanitizedUsers)
         }
@@ -57,21 +38,7 @@ export const handler = async (event) => {
         }
 
         const data = JSON.parse(event.body)
-        
-        // Mapear nombres de campos del formulario a la base de datos
-        const userData = {
-          cod: data.codigo ? parseInt(data.codigo) : null,
-          surnames: data.apellidos,
-          names: data.nombres,
-          alias: data.apodo,
-          cid: data.cedula_id,
-          phone: data.telefono,
-          email: data.correo,
-          status: true, // Por defecto activo
-          createdAt: new Date()
-        }
-        
-        await collection.insertOne(userData)
+        await collection.insertOne(data)
 
         return {
           statusCode: 201,
@@ -79,7 +46,7 @@ export const handler = async (event) => {
             'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': '*'
           },
-          body: JSON.stringify({ message: 'User inserted', data: userData })
+          body: JSON.stringify({ message: 'User inserted', data })
         }
       }
 
@@ -92,20 +59,7 @@ export const handler = async (event) => {
           }
         }
 
-        const { _id, ...rawFields } = updateData
-        
-        // Mapear nombres de campos del formulario a la base de datos
-        const fields = {
-          cod: rawFields.codigo ? parseInt(rawFields.codigo) : null,
-          surnames: rawFields.apellidos,
-          names: rawFields.nombres,
-          alias: rawFields.apodo,
-          cid: rawFields.cedula_id,
-          phone: rawFields.telefono,
-          email: rawFields.correo,
-          updatedAt: new Date()
-        }
-        
+        const { _id, ...fields } = updateData
         const result = await collection.updateOne(
           { _id: new ObjectId(_id) },
           { $set: fields }
@@ -114,8 +68,8 @@ export const handler = async (event) => {
         return {
           statusCode: 200,
           headers: { 
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
+            'Content-Type': 'application/json', 
+            'Access-Control-Allow-Origin': '*' 
           },
           body: JSON.stringify({ message: 'User updated', result })
         }
@@ -148,18 +102,13 @@ export const handler = async (event) => {
           headers: { 
             'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': '*'
-          },
+           },
           body: JSON.stringify({ error: 'Method Not Allowed' })
         }
     }
   } catch (error) {
-    console.error('Database error:', error)
     return {
       statusCode: 500,
-      headers: { 
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      },
       body: JSON.stringify({ error: error.message || 'Internal Server Error' })
     }
   }
