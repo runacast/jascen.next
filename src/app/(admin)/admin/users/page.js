@@ -1,11 +1,9 @@
-'use client'
-
 import Form from 'next/form'
-import { get, post } from '@/lib/users'
+import { get } from '@/lib/users'
 import User from '@/components/admin/users/User'
 
 export default async function pageUsers({params, searchParams}) {
-
+    // Esto ahora funciona porque es un Server Component
     const users = await get()
     
     return <>
@@ -45,5 +43,4 @@ export default async function pageUsers({params, searchParams}) {
             </div>
         </Form>
     </>
-
 }

@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { del } from '@/lib/users'
+import Form from 'next/form' // Importación añadida
+import { del, post } from '@/lib/users' // Importación de post añadida
 
 export default function Modal({open, user = {}, children}){
 
@@ -14,6 +15,8 @@ export default function Modal({open, user = {}, children}){
             await post(form)
             alert('Usuario guardado')
             setVisible(false)
+            // Recargar la página para mostrar los cambios
+            window.location.reload()
         } catch (err) {
             console.error('Error al guardar:', err)
             alert('Ocurrió un error al guardar el usuario')
@@ -21,12 +24,18 @@ export default function Modal({open, user = {}, children}){
     }
 
     const handleDelete = async () => {
+        if (!confirm('¿Estás seguro de que quieres eliminar este usuario?')) {
+            return
+        }
+        
         const form = new FormData()
         form.append('id', user._id)
         try {
             await del(form)
             alert('Usuario eliminado')
             setVisible(false)
+            // Recargar la página para mostrar los cambios
+            window.location.reload()
         } catch (err) {
             console.error('Error al eliminar:', err)
             alert('Ocurrió un error al eliminar el usuario')
@@ -44,37 +53,37 @@ export default function Modal({open, user = {}, children}){
                             {user._id && <input type='hidden' name='id' value={user._id} />}
                             <fieldset className='field-group row'>
                                 <div className='col-6 form-area'>
-                                    <label className='sec-3'>Código</label><input className='sec-2' type='number' name='codigo' defaultValue={user.cod && user.cod} />
+                                    <label className='sec-3'>Código</label><input className='sec-2' type='number' name='codigo' defaultValue={user.cod || ''} />
                                 </div>
                             </fieldset>
                             <fieldset className='field-group row'>
                                 <div className='col-6 form-area'>
-                                    <label className='sec-3'>Apellidos</label><input className='sec-7' required type='text' name='apellidos' defaultValue={user.surnames && user.surnames} />
+                                    <label className='sec-3'>Apellidos</label><input className='sec-7' required type='text' name='apellidos' defaultValue={user.surnames || ''} />
                                 </div>
                                 <div className='col-6 form-area'>
-                                    <label className='sec-3'>Nombres</label><input className='sec-7' required type='text' name='nombres' defaultValue={user.names && user.names} />
-                                </div>
-                            </fieldset>
-                            <fieldset className='field-group row'>
-                                <div className='col-6 form-area'>
-                                    <label className='sec-3'>Apodo</label><input className='sec-7' required type='text' name='apodo' defaultValue={user.alias && user.alias} />
-                                </div>
-                                <div className='col-6 form-area'>
-                                    <label className='sec-3'>Cédula</label><input className='sec-7' required type='number' name='cedula_id' defaultValue={user.cid && user.cid} />
+                                    <label className='sec-3'>Nombres</label><input className='sec-7' required type='text' name='nombres' defaultValue={user.names || ''} />
                                 </div>
                             </fieldset>
                             <fieldset className='field-group row'>
                                 <div className='col-6 form-area'>
-                                    <label className='sec-3'>Teléfono</label><input className='sec-6' type='number' name='telefono' defaultValue={user.phone && user.phone} />
+                                    <label className='sec-3'>Apodo</label><input className='sec-7' required type='text' name='apodo' defaultValue={user.alias || ''} />
                                 </div>
                                 <div className='col-6 form-area'>
-                                    <label className='sec-3'>Correo electrónico</label><input className='sec-7' type='text' name='correo' defaultValue={user.email && user.email} />
+                                    <label className='sec-3'>Cédula</label><input className='sec-7' required type='number' name='cedula_id' defaultValue={user.cid || ''} />
+                                </div>
+                            </fieldset>
+                            <fieldset className='field-group row'>
+                                <div className='col-6 form-area'>
+                                    <label className='sec-3'>Teléfono</label><input className='sec-6' type='number' name='telefono' defaultValue={user.phone || ''} />
+                                </div>
+                                <div className='col-6 form-area'>
+                                    <label className='sec-3'>Correo electrónico</label><input className='sec-7' type='text' name='correo' defaultValue={user.email || ''} />
                                 </div>
                             </fieldset>
                             <div className='field-group'>
                                 <button type='submit' className='btn-form input-attach'>{user._id ? 'Actualizar' : 'Registrar'}</button>
                                 <button type='button' className='btn-form input-attach' onClick={() => setVisible(false)}>Cancelar</button>
-                                {user._id && <button type='submit' className='btn-group btn-form right' onClick={handleDelete}>Borrar usuario</button>}
+                                {user._id && <button type='button' className='btn-group btn-form right' onClick={handleDelete}>Borrar usuario</button>}
                             </div>
                         </Form>
                     </div>
