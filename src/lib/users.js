@@ -1,83 +1,65 @@
-// /src/lib/users.js
+'use server'
 
-const API_URL = '/.netlify/functions/users'
+const baseUrl = process.env.URL || process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:8888'
 
-export async function get(searchValue = '') {
-  try {
-    let url = API_URL
-    if (searchValue) {
-      url += `?search=${encodeURIComponent(searchValue)}`
+export async function get(form){
+
+    let payload = {}
+
+    if(form){
+        payload = Object.fromEntries(form.entries())
     }
-    
-    const response = await fetch(url)
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`)
-    }
-    
-    const data = await response.json()
-    return data
-  } catch (error) {
-    console.error('Error fetching users:', error)
-    throw error
-  }
+
+    const url = new URL('/.netlify/functions/users', baseUrl)
+
+    Object.entries(payload).forEach(([key, value]) =>
+        url.searchParams.append(key, value)
+    )
+
+    const response = await fetch(url.toString(), {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json' // mejor para GET
+        }
+    })
+
+    if (!response.ok) throw new Error('Error get users')
+    return await response.json()
+
 }
 
-export async function post(formData) {
-  try {
-    const data = {}
-    
-    // Convertir FormData a objeto
-    for (let [key, value] of formData.entries()) {
-      data[key] = value
+export async function post(form) {
+
+    let payload = {}
+
+    if (form){
+        payload = Object.fromEntries(form.entries())
     }
-    
-    // Si hay ID, es una actualización (PUT), sino es creación (POST)
-    const method = data.id ? 'PUT' : 'POST'
-    
-    // Para PUT, necesitamos el _id
-    if (method === 'PUT') {
-      data._id = data.id
-      delete data.id
-    }
-    
-    const response = await fetch(API_URL, {
-      method,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data)
+
+    const response = await fetch(`${baseUrl}/.netlify/functions/users`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
     })
-    
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`)
-    }
-    
+
+    if (!response.ok) throw new Error('Error post user')
     return await response.json()
-  } catch (error) {
-    console.error('Error saving user:', error)
-    throw error
-  }
+
 }
 
-export async function del(formData) {
-  try {
-    const id = formData.get('id')
-    
-    const response = await fetch(API_URL, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ _id: id })
-    })
-    
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`)
+export async function del(form) {
+
+    if (form){
+        payload = Object.fromEntries(form.entries())
     }
-    
-    return await response.json()
-  } catch (error) {
-    console.error('Error deleting user:', error)
-    throw error
-  }
+
+    const response = await fetch(`${baseUrl}/.netlify/functions/users`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    })
+
+    if (!response.ok) throw new Error('Error delete user')
+
+    return null
 }
