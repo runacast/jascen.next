@@ -1,6 +1,6 @@
 import Form from 'next/form'
-import Register from '@/components/admin/payments/Register'
-import { get } from '@/lib/payments'
+//import Register from '@/components/admin/payments/Register'
+//import { get } from '@/lib/payments'
 
 export default async function Calendar(){
 
@@ -11,9 +11,9 @@ export default async function Calendar(){
         month: 'long'
     }).format(date);
 
-    const payments = await get(),
+    /*const payments = await get(),
     allTotal = 0, // Total de todo recaudado este mes
-    activity = payments[date.getMonth()]
+    activity = payments[date.getMonth()]*/
 
     return <>
     <br></br>
@@ -23,7 +23,6 @@ export default async function Calendar(){
         <fieldset className='field-group'>
             <label>Número de cédula o código</label>
             <input type='text' className='input-attach' name='query' />
-            <Register>Buscar</Register>
         </fieldset>
     </Form>
     <Form className='form'>
