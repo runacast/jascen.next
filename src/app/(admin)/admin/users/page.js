@@ -1,3 +1,5 @@
+'use client'
+
 import Form from 'next/form'
 import { get, post } from '@/lib/users'
 import User from '@/components/admin/users/User'
