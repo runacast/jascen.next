@@ -1,6 +1,6 @@
 'use client'
 
-import { post,del } from '@/lib/payments'
+import { post, del } from '@/lib/payments'
 import { useState, useTransition } from 'react'
 import { get } from '@/lib/users'
 

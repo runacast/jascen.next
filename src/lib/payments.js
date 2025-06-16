@@ -1,6 +1,6 @@
 'use server'
 
-export async function listOne(form) {
+export async function get(form) {
 
     /*const db = await mongo()
 
@@ -30,6 +30,10 @@ export async function listOne(form) {
     return {}
 }
 
-export async function list(){
-    
+export async function post(form){
+    return {}
+}
+
+export async function del(form) {
+    return {}
 }
