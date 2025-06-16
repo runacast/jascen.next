@@ -2,7 +2,8 @@
 
 const baseUrl = process.env.URL || process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:8888'
 
-export async function get(form = undefined){
+export async function get(form){
+
     let payload = {}
 
     if(form){
@@ -24,9 +25,11 @@ export async function get(form = undefined){
 
     if (!response.ok) throw new Error('Error get users')
     return await response.json()
+
 }
 
 export async function post(form) {
+
     let payload = {}
 
     if (form){
@@ -41,4 +44,5 @@ export async function post(form) {
 
     if (!response.ok) throw new Error('Error post user')
     return await response.json()
+
 }
