@@ -1,7 +1,10 @@
 'use server'
 
 import mongo from '@/api/mongodb'
-import { ObjectId } from 'mongodb';
+import { MongoClient, ObjectId } from 'mongodb'
+
+const mongoClient = new MongoClient(process.env.MONGODB_URI)
+const clientPromise = mongoClient.connect()
 
 export async function get(form = undefined){
 
@@ -37,7 +40,7 @@ export async function get(form = undefined){
 export async function post(form) {
 
     /* Users */
-    let response
+    /*let response
     const db = await mongo()
 
     if (db.statusCode == 500) {
@@ -45,9 +48,12 @@ export async function post(form) {
     }
     
     const collection = db.collection('users'),
-    total = await collection.countDocuments()
+    total = await collection.countDocuments()*/
+    const database = (await clientPromise).db(process.env.MONGODB_DATABASE)
+
+    const collection = database.collection(process.env.MONGODB_COLLECTION)
     
-    let user = {
+    let response, user = {
         cod: parseInt(form.get('codigo'), 10),
         surnames: form.get('apellidos'),
         names: form.get('nombres'),
