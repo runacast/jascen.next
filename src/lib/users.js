@@ -1,10 +1,7 @@
 'use server'
 
 import mongo from '@/api/mongodb'
-import { MongoClient, ObjectId } from 'mongodb'
-
-const mongoClient = new MongoClient(process.env.MONGODB_URI)
-const clientPromise = mongoClient.connect()
+import { MongoClient } from 'mongodb'
 
 export async function get(form = undefined){
 
@@ -49,6 +46,8 @@ export async function post(form) {
     
     const collection = db.collection('users'),
     total = await collection.countDocuments()*/
+    const mongoClient = new MongoClient(process.env.MONGODB_URI)
+    const clientPromise = mongoClient.connect()
     const database = (await clientPromise).db(process.env.MONGODB_DATABASE)
 
     const collection = database.collection(process.env.MONGODB_COLLECTION)
@@ -91,7 +90,7 @@ export async function post(form) {
 
 export async function del(form){
 
-    let response
+    /*let response
     
     const db = await mongo()
 
@@ -104,5 +103,5 @@ export async function del(form){
 
     return {
         deletes : response.deletedCount
-    }
+    }*/
 }
