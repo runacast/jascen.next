@@ -11,6 +11,18 @@ const handler = async function(event){
     const collection = database.collection(process.env.MONGODB_COLLECTION)
 
     const users = await collection.find({}).toArray()
+    const user = {
+      cod: users.length + 1,
+      surnames: 'Jaminez',
+      names: 'Darwin',
+      alias: '""',
+      cid: 230409494,
+      phone: '039382838',
+      email: '',
+      status: true
+    }
+
+    const resp = await collection.insertOne(user)
 
     return {
       statusCode: 200,
