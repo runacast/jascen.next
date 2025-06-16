@@ -1,11 +1,24 @@
 'use client'
 
 import { useState } from 'react'
-import { post, del } from '@/lib/users'
+import { del } from '@/lib/users'
 
 export default function Modal({open, user = {}, children}){
 
     const [visible, setVisible] = useState(false)
+
+    const handleDelete = async () => {
+        const form = new FormData()
+        form.append('id', user._id)
+        try {
+            await del(form)
+            alert('Usuario eliminado')
+            setVisible(false)
+        } catch (err) {
+            console.error('Error al eliminar:', err)
+            alert('Ocurrió un error al eliminar el usuario')
+        }
+    }
 
     return <>
     <span onClick={() => setVisible(true)}>{children}</span>
@@ -45,9 +58,9 @@ export default function Modal({open, user = {}, children}){
                         </div>
                     </fieldset>
                     <div className='field-group'>
-                        <button type='submit' className='btn-form input-attach' formAction={post}>{user._id ? 'Actualizar' : 'Registrar'}</button>
+                        <button type='submit' className='btn-form input-attach'>{user._id ? 'Actualizar' : 'Registrar'}</button>
                         <button type='button' className='btn-form input-attach' onClick={() => setVisible(false)}>Cancelar</button>
-                        {user._id && <button type='submit' className='btn-group btn-form right' formAction={del}>Borrar usuario</button>}
+                        {user._id && <button type='submit' className='btn-group btn-form right' onClick={handleDelete}>Borrar usuario</button>}
                     </div>
                 </div>
             </div>

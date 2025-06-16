@@ -1,6 +1,6 @@
 'use server'
 
-const baseUrl = process.env.URL || process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:8888'
+const baseUrl = process.env.URL || process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
 
 export async function get(form){
 
@@ -45,4 +45,9 @@ export async function post(form) {
     if (!response.ok) throw new Error('Error post user')
     return await response.json()
 
+}
+
+export async function del(form) {
+
+    return null
 }
