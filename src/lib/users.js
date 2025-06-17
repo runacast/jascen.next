@@ -43,7 +43,7 @@ export async function post(form) {
     })
 
     if (!response.ok) throw new Error('Error post user')
-    return await response.json()
+    return {}
 
 }
 
