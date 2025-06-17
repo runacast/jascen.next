@@ -10,6 +10,25 @@ export default function Modal({open, user = {}, children}){
 
     const handleSubmit = async (event) => {
         event.preventDefault()
+        const formData = new FormData(event.target)
+        const data = Object.fromEntries(formData.entries())
+        try {
+            const response = await fetch('/.netlify/functions/users', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            if (!response.ok) throw new Error('Error en el servidor')
+                const result = await response.json()
+            setStatus(`✅ Usuario registrado: ${JSON.stringify(result)}`)
+        } catch (err) {
+            console.error(err)
+            setStatus('❌ Ocurrió un error')
+        }
+    }
+
+    /*const handleSubmit = async (event) => {
+        event.preventDefault()
         const form = new FormData(event.target)
         try{
             await post(form)
@@ -20,7 +39,7 @@ export default function Modal({open, user = {}, children}){
             console.error('Error al guardar:', err.message)
             alert('Ocurrió un error al guardar el usuario: '+err.message)
         }
-    }
+    }*/
 
     const handleDelete = async () => {
         
