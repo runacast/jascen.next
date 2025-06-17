@@ -17,7 +17,7 @@ export default async function adminUsers({params, searchParams}) {
     users = (await response).json()
     
     return <>
-        <User open={false}><button type='button' className='btn btn-form'>Añadir usuario</button></User>
+        <User open={false} users={users}><button type='button' className='btn btn-form'>Añadir usuario</button></User>
         <Form className='form' action={get}>
             <fieldset>
                 <div className='field-group'>
@@ -28,7 +28,30 @@ export default async function adminUsers({params, searchParams}) {
         </Form>
         <Form className='form'>
             <div className='v-overflow'>
-                { users.length ? (<div>HOLA</div>) : <div>{message}</div> }
+                { users.length ? (
+                    <table className='table'>
+                        <thead>
+                            <tr>
+                                <th>N°</th>
+                                <th>Apellidos y nombres</th>
+                                <th>Apodo</th>
+                                <th>Cédula</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {users.map((user, index) => (
+                                <tr key={index}>
+                                    <td>{user.cod}</td>
+                                    <td><User open={false} user={user}><a href='#'>{user.surnames} {user.names}</a></User></td>
+                                    <td>{user.alias}</td>
+                                    <td>{user.cid}</td>
+                                    <td>{user.status ? "activo" : "inactivo"}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                ) : <div className='post-panel'>{message}</div> }
             </div>
         </Form>
     </>

@@ -3,7 +3,7 @@
 import Form from 'next/form'
 import { useState } from 'react'
 
-export default function Modal({open, user = {}, children}){
+export default function Modal({open, users = [], children}){
 
     const [visible, setVisible] = useState(false)
 
