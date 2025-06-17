@@ -28,30 +28,28 @@ export default async function adminUsers({params, searchParams}) {
         </Form>
         <Form className='form'>
             <div className='v-overflow'>
-                { users.length ? (
-                    <table className='table'>
-                        <thead>
-                            <tr>
-                                <th>N°</th>
-                                <th>Apellidos y nombres</th>
-                                <th>Apodo</th>
-                                <th>Cédula</th>
-                                <th>Estado</th>
+                <table className='table'>
+                    <thead>
+                        <tr>
+                            <th>N°</th>
+                            <th>Apellidos y nombres</th>
+                            <th>Apodo</th>
+                            <th>Cédula</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {users.map((user, index) => (
+                            <tr key={index}>
+                                <td>{user.cod}</td>
+                                <td><User open={false} user={user}><a href='#'>{user.surnames} {user.names}</a></User></td>
+                                <td>{user.alias}</td>
+                                <td>{user.cid}</td>
+                                <td>{user.status ? "activo" : "inactivo"}</td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            {users.map((user, index) => (
-                                <tr key={index}>
-                                    <td>{user.cod}</td>
-                                    <td><User open={false} user={user}><a href='#'>{user.surnames} {user.names}</a></User></td>
-                                    <td>{user.alias}</td>
-                                    <td>{user.cid}</td>
-                                    <td>{user.status ? "activo" : "inactivo"}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                ) : <div className='post-panel'>{message}</div> }
+                        ))}
+                    </tbody>
+                </table>
             </div>
         </Form>
     </>
