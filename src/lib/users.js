@@ -4,7 +4,7 @@ const baseUrl = process.env.URL || process.env.NEXT_PUBLIC_SITE_URL || 'http://l
 
 export async function get(form){
 
-    /*let payload = {}
+    let payload = {}
 
     if(form){
         payload = Object.fromEntries(form.entries())
@@ -24,7 +24,7 @@ export async function get(form){
     })
 
     if (!response.ok) throw new Error('Error get users')
-    return await response.json()*/
+    return await response.json()
     return null
 
 }
@@ -53,7 +53,7 @@ export async function post(form) {
 
 export async function del(form) {
 
-    /*if (form){
+    if (form){
         payload = Object.fromEntries(form.entries())
     }
 
@@ -63,7 +63,7 @@ export async function del(form) {
         body: JSON.stringify(payload)
     })
 
-    if (!response.ok) throw new Error('Error delete user')*/
+    if (!response.ok) throw new Error('Error delete user')
 
     return null
 }
