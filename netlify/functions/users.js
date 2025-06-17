@@ -4,17 +4,8 @@ const mongoClient = new MongoClient(process.env.MONGODB_URI)
 const clientPromise = mongoClient.connect()
 
 export const handler = async (event) => {
-  return {
-    statusCode: 200,
-    headers: { 
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*'
-    },
-    body: JSON.stringify({ test: 'working' })
-  }
-}
-
-  /*try {
+  
+  try {
     const method = event.httpMethod
     const client = await clientPromise
     const db = client.db(process.env.MONGODB_DATABASE)
@@ -122,4 +113,5 @@ export const handler = async (event) => {
       body: JSON.stringify({ error: error.message || 'Internal Server Error' })
     }
   }
-}*/
+
+}
