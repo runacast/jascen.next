@@ -33,7 +33,16 @@ export async function post(form) {
     let payload = {}
 
     if (form){
-        payload = Object.fromEntries(form.entries())
+        payload = {
+            cod: 3,
+            surnames: 'Pele',
+            names: 'Daly',
+            alias: 'Nic',
+            cid: 929922992,
+            phone: "068899898",
+            email: "",
+            status: true
+        }
     }
 
     const response = await fetch(`${baseUrl}/.netlify/functions/users`, {

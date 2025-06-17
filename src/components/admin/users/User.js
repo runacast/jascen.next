@@ -8,14 +8,13 @@ export default function Modal({open, user = {}, children}){
 
     const [visible, setVisible] = useState(false)
 
-    const handleSubmit = async (e) => {
-        e.preventDefault()
-        const form = new FormData(e.target)
+    const handleSubmit = async (event) => {
+        event.preventDefault()
+        const form = new FormData(event.target)
         try {
             await post(form)
             alert('Usuario guardado')
             setVisible(false)
-            // Recargar la página para mostrar los cambios
             window.location.reload()
         } catch (err) {
             console.error('Error al guardar:', err)
