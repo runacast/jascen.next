@@ -36,7 +36,7 @@ export async function post(form) {
         payload = Object.fromEntries(form.entries())
     }
 
-    const response = await fetch(`/.netlify/functions/users`, {
+    const response = await fetch('https://jascen.netlify.app/.netlify/functions/users', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
