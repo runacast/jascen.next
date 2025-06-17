@@ -1,6 +1,5 @@
 'use client'
 
-import Form from 'next/form'
 import { useState } from 'react'
 
 export default function Modal({open, user = {}, children}){
@@ -57,7 +56,7 @@ export default function Modal({open, user = {}, children}){
             <div className='modal-background'>
                 <div className='container'>
                     <div className='content'>
-                        <Form className='form' onSubmit={handleSubmit}>
+                        <form className='form' onSubmit={handleSubmit}>
                             <legend>{user._id ? 'Editar datos de usuario' : 'Ingresa los datos del usuario'}</legend>
                             {user._id && <input type='hidden' name='id' value={user._id} />}
                             <fieldset className='field-group row'>
@@ -94,7 +93,7 @@ export default function Modal({open, user = {}, children}){
                                 <button type='button' className='btn-form input-attach' onClick={() => setVisible(false)}>Cancelar</button>
                                 {user._id && <button type='button' className='btn-group btn-form right' onClick={handleDelete}>Borrar usuario</button>}
                             </div>
-                        </Form>
+                        </form>
                     </div>
                 </div>
             </div>
