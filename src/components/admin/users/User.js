@@ -3,7 +3,7 @@
 import Form from 'next/form'
 import { useState } from 'react'
 
-export default function Modal({open, users = [], children}){
+export default function Modal({open, user = {}, children}){
 
     const [visible, setVisible] = useState(false)
 
@@ -48,9 +48,7 @@ export default function Modal({open, users = [], children}){
         }
         
         const form = new FormData()
-        form.append('id', user._id)
         try {
-            await del(form)
             alert('Usuario eliminado')
             setVisible(false)
             // Recargar la página para mostrar los cambios

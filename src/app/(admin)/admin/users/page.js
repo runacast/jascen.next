@@ -17,7 +17,7 @@ export default async function adminUsers({params, searchParams}) {
     users = (await response).json()
     
     return <>
-        <User open={false} users={users}><button type='button' className='btn btn-form'>Añadir usuario</button></User>
+        <User open={false}><button type='button' className='btn btn-form'>Añadir usuario</button></User>
         <Form className='form' action={get}>
             <fieldset>
                 <div className='field-group'>
