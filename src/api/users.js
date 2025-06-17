@@ -30,7 +30,7 @@ export const handler = async (event) => {
       }
 
       case 'POST': {
-        if (!event.body) {
+        /*if (!event.body) {
           return {
             statusCode: 400,
             body: JSON.stringify({ error: 'Empty request body' })
@@ -38,7 +38,7 @@ export const handler = async (event) => {
         }
 
         const data = JSON.parse(event.body)
-        await collection.insertOne(data)
+        await collection.insertOne(data)*/
 
         return {
           statusCode: 201,
@@ -46,7 +46,16 @@ export const handler = async (event) => {
             'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': '*'
           },
-          body: JSON.stringify({ message: 'User inserted', data })
+          body: JSON.stringify({ message: 'User inserted', user : {
+            cod: 3,
+            surnames: 'Pele',
+            names: 'Daly',
+            alias: 'Nic',
+            cid: 929922992,
+            phone: "068899898",
+            email: "",
+            status: true
+        } })
         }
       }
 
