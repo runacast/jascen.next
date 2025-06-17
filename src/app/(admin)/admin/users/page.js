@@ -5,7 +5,7 @@ export default async function adminUsers() {
 
     let users = [], message = null
     
-    const response = await fetch('/.netlify/functions/users', {
+    /*const response = await fetch('/.netlify/functions/users', {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' }
     })
@@ -14,7 +14,7 @@ export default async function adminUsers() {
         message = "Error en el servidor"
     }
     
-    users = (await response).json()
+    users = (await response).json()*/
     
     return <>
         <User open={false}><button type='button' className='btn btn-form'>Añadir usuario</button></User>

@@ -1,6 +1,6 @@
 {
     "name": "jascen",
-    "version": "0.1",
+    "version": "0.1.0",
     "description": "Aplicación creada para gestión de pagos y usuario de la red de alcantarillado de Salasaka.",
     "private": true,
     "scripts": {
