@@ -4,7 +4,7 @@ const baseUrl = process.env.URL || process.env.NEXT_PUBLIC_SITE_URL || 'http://l
 
 export async function get(form){
 
-    let payload = {}
+    /*let payload = {}
 
     if(form){
         payload = Object.fromEntries(form.entries())
@@ -24,7 +24,8 @@ export async function get(form){
     })
 
     if (!response.ok) throw new Error('Error get users')
-    return await response.json()
+    return await response.json()*/
+    return null
 
 }
 
@@ -32,24 +33,27 @@ export async function post(form) {
 
     let payload = {}
 
-    if (form){
+    if(form){
         payload = Object.fromEntries(form.entries())
     }
-
-    const response = await fetch('https://jascen.netlify.app/.netlify/functions/users', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-    })
-
-    if (!response.ok) throw new Error('Error post user')
-    return {}
+    
+    try {
+        const response = await fetch('/.netlify/functions/users', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        })
+        if (!response.ok) throw new Error('Error en el servidor')
+            const result = await response.json()
+    } catch (err) {
+        console.error(err)
+    }
 
 }
 
 export async function del(form) {
 
-    if (form){
+    /*if (form){
         payload = Object.fromEntries(form.entries())
     }
 
@@ -59,7 +63,7 @@ export async function del(form) {
         body: JSON.stringify(payload)
     })
 
-    if (!response.ok) throw new Error('Error delete user')
+    if (!response.ok) throw new Error('Error delete user')*/
 
     return null
 }

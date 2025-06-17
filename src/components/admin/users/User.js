@@ -8,7 +8,7 @@ export default function Modal({open, user = {}, children}){
 
     const [visible, setVisible] = useState(false)
 
-    const handleSubmit = async (event) => {
+    const _handleSubmit = async (event) => {
         event.preventDefault()
         const formData = new FormData(event.target)
         const data = Object.fromEntries(formData.entries())
@@ -27,7 +27,7 @@ export default function Modal({open, user = {}, children}){
         }
     }
 
-    /*const handleSubmit = async (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault()
         const form = new FormData(event.target)
         try{
@@ -39,7 +39,7 @@ export default function Modal({open, user = {}, children}){
             console.error('Error al guardar:', err.message)
             alert('Ocurrió un error al guardar el usuario: '+err.message)
         }
-    }*/
+    }
 
     const handleDelete = async () => {
         
