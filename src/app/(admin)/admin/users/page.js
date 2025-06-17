@@ -18,7 +18,7 @@ export default async function adminUsers({params, searchParams}) {
     
     return <>
         <User open={false}><button type='button' className='btn btn-form'>Añadir usuario</button></User>
-        <Form className='form' action={get}>
+        <Form className='form'>
             <fieldset>
                 <div className='field-group'>
                     <input type='text' name='value' className='input-attach' />
