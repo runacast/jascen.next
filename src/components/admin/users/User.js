@@ -11,14 +11,14 @@ export default function Modal({open, user = {}, children}){
     const handleSubmit = async (event) => {
         event.preventDefault()
         const form = new FormData(event.target)
-        try {
+        try{
             await post(form)
             alert('Usuario guardado')
             setVisible(false)
             window.location.reload()
-        } catch (err) {
-            console.error('Error al guardar:', err)
-            alert('Ocurrió un error al guardar el usuario')
+        }catch(err){
+            console.error('Error al guardar:', err.message)
+            alert('Ocurrió un error al guardar el usuario: '+err.message)
         }
     }
 
