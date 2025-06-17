@@ -45,7 +45,7 @@ export async function post(form) {
         }
     }
 
-    const response = await fetch(`${baseUrl}/.netlify/functions/users`, {
+    const response = await fetch(`/.netlify/functions/users`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
