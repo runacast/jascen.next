@@ -1,10 +1,7 @@
-import Form from '@/app/(admin)/admin/contabilidad/form'
-
-export default function Page() {
+export default function adminContabilidad() {
   return (
     <main>
       <h1>Nuevo usuario</h1>
-      <Form />
     </main>
   )
 }

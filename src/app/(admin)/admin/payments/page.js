@@ -1,6 +1,5 @@
 import Form from 'next/form'
 //import Register from '@/components/admin/payments/Register'
-//import { get } from '@/lib/payments'
 
 export default async function Calendar(){
 
@@ -9,7 +8,7 @@ export default async function Calendar(){
     const monthTime = new Intl.DateTimeFormat('es-EC', {
         timeZone: 'America/Lima',
         month: 'long'
-    }).format(date);
+    }).format(date)
 
     /*const payments = await get(),
     allTotal = 0, // Total de todo recaudado este mes

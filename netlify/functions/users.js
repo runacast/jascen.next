@@ -13,6 +13,7 @@ export const handler = async (event) => {
 
     switch (method) {
       case 'GET': {
+
         const users = await collection.find({}).toArray()
         const sanitizedUsers = users.map(user => ({
           ...user,
@@ -28,9 +29,9 @@ export const handler = async (event) => {
           },
           body: JSON.stringify(sanitizedUsers)
         }
-      }
 
-      case 'POST': {
+      } case 'POST': {
+
         if (!event.body) {
           return {
             statusCode: 400,
@@ -49,9 +50,8 @@ export const handler = async (event) => {
           },
           body: JSON.stringify({ message: 'User inserted', data })
         }
-      }
 
-      case 'PUT': {
+      } case 'PUT': {
         const updateData = JSON.parse(event.body)
         if (!updateData._id) {
           return {
@@ -74,9 +74,7 @@ export const handler = async (event) => {
           },
           body: JSON.stringify({ message: 'User updated', result })
         }
-      }
-
-      case 'DELETE': {
+      } case 'DELETE': {
         const { _id } = JSON.parse(event.body || '{}')
         if (!_id) {
           return {
@@ -95,9 +93,7 @@ export const handler = async (event) => {
           },
           body: JSON.stringify({ message: 'User deleted', deletedCount: result.deletedCount })
         }
-      }
-
-      default:
+      } default:
         return {
           statusCode: 405,
           headers: { 
@@ -106,12 +102,15 @@ export const handler = async (event) => {
            },
           body: JSON.stringify({ error: 'Method Not Allowed' })
         }
+      }
+      
+    } catch (error) {
+
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ error: error.message || 'Internal Server Error' })
+      }
+
     }
-  } catch (error) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: error.message || 'Internal Server Error' })
-    }
-  }
 
 }

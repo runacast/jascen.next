@@ -1,10 +1,20 @@
 import Form from 'next/form'
-import { get } from '@/lib/users'
 import User from '@/components/admin/users/User'
 
 export default async function adminUsers({params, searchParams}) {
+
+    let users = [], message
     
-    const users = await get()
+    const response = await fetch('/.netlify/functions/users', {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+    })
+
+    if(!response.ok){
+        message = "Error en el servidor"
+    }
+    
+    users = (await response).json()
     
     return <>
         <User open={false}><button type='button' className='btn btn-form'>Añadir usuario</button></User>
@@ -18,28 +28,7 @@ export default async function adminUsers({params, searchParams}) {
         </Form>
         <Form className='form'>
             <div className='v-overflow'>
-                <table className='table'>
-                    <thead>
-                        <tr>
-                            <th>N°</th>
-                            <th>Apellidos y nombres</th>
-                            <th>Apodo</th>
-                            <th>Cédula</th>
-                            <th>Estado</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {users.map((user, index) => (
-                            <tr key={index}>
-                                <td>{user.cod}</td>
-                                <td><User open={false} user={user}><a href='#'>{user.surnames} {user.names}</a></User></td>
-                                <td>{user.alias}</td>
-                                <td>{user.cid}</td>
-                                <td>{user.status ? "activo" : "inactivo"}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+                { users.length ? (<div>HOLA</div>) : <div>{message}</div> }
             </div>
         </Form>
     </>

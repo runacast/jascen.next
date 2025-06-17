@@ -2,46 +2,46 @@
 
 import Form from 'next/form'
 import { useState } from 'react'
-import { del, post } from '@/lib/users'
 
 export default function Modal({open, user = {}, children}){
 
     const [visible, setVisible] = useState(false)
 
-    const _handleSubmit = async (event) => {
+    const handleSubmit = async (event) => {
+
         event.preventDefault()
-        const formData = new FormData(event.target)
-        const data = Object.fromEntries(formData.entries())
+
+        const form = new FormData(event.target),
+        data = {
+            cod: parseInt(form.get('codigo'), 10),
+            surnames: form.get('apellidos'),
+            names: form.get('nombres'),
+            alias: form.get('apodo'),
+            cid: parseInt(form.get('cedula'), 10),
+            phone: form.get('telefono'),
+            email: form.get('correo'),
+            active: true
+        }
+
         try {
+
             const response = await fetch('/.netlify/functions/users', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
             })
-            if (!response.ok) throw new Error('Error en el servidor')
+
+            if(!response.ok) throw new Error('Error en el servidor')
                 const result = await response.json()
-            setStatus(`✅ Usuario registrado: ${JSON.stringify(result)}`)
-        } catch (err) {
-            console.error(err)
-            setStatus('❌ Ocurrió un error')
-        }
-    }
-
-    const handleSubmit = async (event) => {
-        event.preventDefault()
-        const form = new FormData(event.target)
-        try{
-            await post(form)
-            alert('Usuario guardado')
             setVisible(false)
-            window.location.reload()
+
         }catch(err){
-            console.error('Error al guardar:', err.message)
-            alert('Ocurrió un error al guardar el usuario: '+err.message)
+            alert(err.message)
         }
+
     }
 
-    const handleDelete = async () => {
+    const handleDelete = async (event) => {
         
         if (!confirm('¿Estás seguro de que quieres eliminar este usuario?')) {
             return
@@ -88,7 +88,7 @@ export default function Modal({open, user = {}, children}){
                                     <label className='sec-3'>Apodo</label><input className='sec-7' required type='text' name='apodo' defaultValue={user.alias || ''} />
                                 </div>
                                 <div className='col-6 form-area'>
-                                    <label className='sec-3'>Cédula</label><input className='sec-7' required type='number' name='cedula_id' defaultValue={user.cid || ''} />
+                                    <label className='sec-3'>Cédula</label><input className='sec-7' required type='number' name='cedula' defaultValue={user.cid || ''} />
                                 </div>
                             </fieldset>
                             <fieldset className='field-group row'>
