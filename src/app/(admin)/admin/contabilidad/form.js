@@ -12,7 +12,7 @@ export default function Form() {
     const data = Object.fromEntries(formData.entries())
 
     try {
-      const response = await fetch('/.netlify/functions/postUser', {
+      const response = await fetch('/.netlify/functions/users', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
