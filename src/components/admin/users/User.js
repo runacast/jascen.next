@@ -23,11 +23,11 @@ export default function Modal({open, user = {}, children}){
 
             if (!response.ok) throw new Error('Error en el servidor')
                 const result = await response.json()
-            setStatus(`✅ Usuario registrado: ${JSON.stringify(result)}`)
+            setVisible(false)
 
         }catch(err){
             console.error(err)
-            setStatus('❌ Ocurrió un error')
+            alert('Ocurrió un error')
         }
 
     }
