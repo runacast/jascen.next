@@ -11,49 +11,41 @@ export default function Modal({open, user = {}, children}){
 
         event.preventDefault()
 
-        const form = new FormData(event.target),
-        data = {
-            cod: parseInt(form.get('codigo'), 10),
-            surnames: form.get('apellidos'),
-            names: form.get('nombres'),
-            alias: form.get('apodo'),
-            cid: parseInt(form.get('cedula'), 10),
-            phone: form.get('telefono'),
-            email: form.get('correo'),
-            active: true
-        }
+        const formData = new FormData(event.target)
+        const data = Object.fromEntries(formData.entries())
 
-        try {
-
+        try{
             const response = await fetch('/.netlify/functions/users', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
             })
 
-            if(!response.ok) throw new Error('Error en el servidor')
+            if (!response.ok) throw new Error('Error en el servidor')
                 const result = await response.json()
-            setVisible(false)
+            setStatus(`✅ Usuario registrado: ${JSON.stringify(result)}`)
 
         }catch(err){
-            alert(err.message)
+            console.error(err)
+            setStatus('❌ Ocurrió un error')
         }
 
     }
 
-    const handleDelete = async (event) => {
+    const handleDelete = async () => {
         
-        if (!confirm('¿Estás seguro de que quieres eliminar este usuario?')) {
+        if(!confirm('¿Estás seguro de que quieres eliminar este usuario?')){
             return
         }
         
         const form = new FormData()
+        form.append('id', user._id)
         try {
             alert('Usuario eliminado')
             setVisible(false)
             // Recargar la página para mostrar los cambios
             window.location.reload()
-        } catch (err) {
+        }catch(err){
             console.error('Error al eliminar:', err)
             alert('Ocurrió un error al eliminar el usuario')
         }
@@ -86,7 +78,7 @@ export default function Modal({open, user = {}, children}){
                                     <label className='sec-3'>Apodo</label><input className='sec-7' required type='text' name='apodo' defaultValue={user.alias || ''} />
                                 </div>
                                 <div className='col-6 form-area'>
-                                    <label className='sec-3'>Cédula</label><input className='sec-7' required type='number' name='cedula' defaultValue={user.cid || ''} />
+                                    <label className='sec-3'>Cédula</label><input className='sec-7' required type='number' name='cedula_id' defaultValue={user.cid || ''} />
                                 </div>
                             </fieldset>
                             <fieldset className='field-group row'>
