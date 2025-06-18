@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import User from '@/src/models/User'
+import User from '@/models/User'
 
 const connection = async () => {
   await mongoose.connect(process.env.MONGODB_URI)
