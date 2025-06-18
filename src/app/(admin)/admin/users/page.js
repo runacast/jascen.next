@@ -7,7 +7,6 @@ export default async function adminUsers() {
     let users = await list(0, 10)
     let message = null
     
-
     users = users.map(user => ({
         ...user,
         _id: user._id.toString()

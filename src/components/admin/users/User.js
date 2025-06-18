@@ -11,16 +11,7 @@ export default function Modal({open, user = {}, children}){
         event.preventDefault()
 
         const form = new FormData(event.target)
-        const data = {
-            cod: 1,
-            surnames: '',
-            names: '',
-            alias: '',
-            cid: 0,
-            phone: '',
-            email: '',
-            active: true
-        }
+        const data = Object.fromEntries(form.entries())
 
         try{
             const response = await fetch(`${process.env.BASE_URL}/.netlify/functions/users`, {
