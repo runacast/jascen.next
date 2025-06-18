@@ -13,7 +13,7 @@ const handler = async (event) => {
 
     await connection().catch(err => console.log(err))
 
-    if (method == 'POST') {
+    if (method == 'GET') {
 
       const user = new User({
         cod: 1,
@@ -28,12 +28,25 @@ const handler = async (event) => {
       console.log("Usuario guardado.")
 
       return {
-        statusCode: 201,
+        statusCode: 200,
         headers: {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*'
         },
         body: JSON.stringify({ message: 'User inserted' })
+      }
+
+    }
+
+    if (method == 'POST') {
+
+      return {
+        statusCode: 201,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        },
+        body: JSON.stringify({ message: 'Post success!' })
       }
 
     }
