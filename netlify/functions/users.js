@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import User from '../../src/models/Users'
+import User from '@/models/Users'
 
 const connection = async () => {
   await mongoose.connect(process.env.MONGODB_URI)
@@ -15,6 +15,19 @@ const handler = async (event) => {
 
     if (method == 'GET') {
 
+      return {
+        statusCode: 200,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        },
+        body: JSON.stringify({ message: 'Post success!' })
+      }
+
+    }
+
+    if (method == 'POST') {
+
       const user = new User({
         cod: 1,
         surnames: 'Foo',
@@ -28,25 +41,12 @@ const handler = async (event) => {
       console.log("Usuario guardado.")
 
       return {
-        statusCode: 200,
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        },
-        body: JSON.stringify({ message: 'User inserted' })
-      }
-
-    }
-
-    if (method == 'POST') {
-
-      return {
         statusCode: 201,
         headers: {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*'
         },
-        body: JSON.stringify({ message: 'Post success!' })
+        body: JSON.stringify({ message: 'User inserted' })
       }
 
     }
