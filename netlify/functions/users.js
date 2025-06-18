@@ -1,17 +1,10 @@
-import mongoose from 'mongoose'
 import User from '../../src/models/User'
-
-const connection = async () => {
-  await mongoose.connect(process.env.MONGODB_URI)
-}
 
 const handler = async (event) => {
 
   try{
 
     const method = event.httpMethod
-
-    await connection().catch(err => console.log(err))
 
     if (method == 'GET') {
 

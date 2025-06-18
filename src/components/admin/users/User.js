@@ -52,9 +52,7 @@ export default function Modal({open, user = {}, children}){
     }
 
     return <>
-        <form className='form'>
-            <span onClick={() => setVisible(true)}>{children}</span>
-        </form>
+        <span onClick={() => setVisible(true)}>{children}</span>
         {visible && (
             <div className='modal-background'>
                 <div className='container'>
