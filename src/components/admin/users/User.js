@@ -23,6 +23,7 @@ export default function Modal({open, user = {}, children}){
             if (!response.ok) throw new Error('Error en el servidor')
                 const result = await response.json()
             setVisible(false)
+            window.location.reload()
 
         }catch(err){
             console.error(err)
@@ -79,7 +80,7 @@ export default function Modal({open, user = {}, children}){
                                     <label className='sec-3'>Apodo</label><input className='sec-7' required type='text' name='apodo' defaultValue={user.alias || ''} />
                                 </div>
                                 <div className='col-6 form-area'>
-                                    <label className='sec-3'>Cédula</label><input className='sec-7' required type='number' name='cedula_id' defaultValue={user.cid || ''} />
+                                    <label className='sec-3'>Cédula</label><input className='sec-7' required type='number' name='cedula' defaultValue={user.cid || ''} />
                                 </div>
                             </fieldset>
                             <fieldset className='field-group row'>

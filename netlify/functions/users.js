@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import User from '../../src/models/Users'
+import User from '@/src/models/User'
 
 const connection = async () => {
   await mongoose.connect(process.env.MONGODB_URI)
@@ -21,19 +21,24 @@ const handler = async (event) => {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*'
         },
-        body: JSON.stringify({ message: 'Post success!' })
+        body: JSON.stringify({ message: 'Get success!' })
       }
 
     }
 
     if (method == 'POST') {
 
+      const total = await User.countDocuments()
+      const data = JSON.parse(event.body)
+
       const user = new User({
-        cod: 1,
-        surnames: 'Foo',
-        names: 'Foo',
-        cid: 34234234,
-        alias: '""'
+        cod: total + 1,
+        surnames: data.apellidos,
+        names: data.nombres,
+        cid: data.cedula,
+        alias: data.apodo,
+        phone: data.telefono,
+        email: data.correo 
       })
 
       console.log("Guardando usuario...")
