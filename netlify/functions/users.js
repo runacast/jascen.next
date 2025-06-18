@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import User from '../../src/models/Users'
+import User from '@/models/Users'
 
 const connection = async () => {
   await mongoose.connect(process.env.MONGODB_URI)
@@ -7,31 +7,40 @@ const connection = async () => {
 
 const handler = async (event) => {
 
-  const method = event.httpMethod
+  try{
+    
+    const method = event.httpMethod
 
-  connection().catch(err => console.log(err))
+    await connection().catch(err => console.log(err))
 
-  if(method == 'GET'){
+    if (method == 'POST') {
 
-    const user = new User({
-      cod: 1,
-      surnames: 'Albin',
-      names: 'Albin',
-      cid: 34234234,
-      alias: '""'
-    })
+      const user = new User({
+        cod: 1,
+        surnames: 'Foo',
+        names: 'Foo',
+        cid: 34234234,
+        alias: '""'
+      })
 
-    await user.save()
+      await user.save()
 
-    return {
-      statusCode: 201,
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      },
-      body: JSON.stringify({ message: 'User inserted' })
+      return {
+        statusCode: 201,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        },
+        body: JSON.stringify({ message: 'User inserted' })
+      }
+
     }
 
+  }catch(e){
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: 'Error en el servidor' })
+    }
   }
 
 }
