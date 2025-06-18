@@ -1,36 +1,9 @@
 import mongoose from 'mongoose'
+import User from '@/models/Users'
 
 const connection = async () => {
   await mongoose.connect(process.env.MONGODB_URI)
 }
-
-const { Schema } = mongoose
-
-const userSchema = new Schema({
-  cod: Number,
-  surnames: String,
-  names: String,
-  cid: Number,
-  alias: {
-    type: String,
-    require: false,
-    default: null
-  },
-  phone: {
-    type: String,
-    require: false,
-    default: null
-  },
-  email: {
-    type: String,
-    require: false,
-    default: null
-  },
-  active: {
-    type: Boolean,
-    default: true
-  }
-})
 
 export const handler = async (event) => {
 
@@ -40,7 +13,6 @@ export const handler = async (event) => {
 
   if(method == 'GET'){
 
-    const User = mongoose.model('users', userSchema)
     const user = new User({
       cod: 1,
       surnames: 'Albin',
