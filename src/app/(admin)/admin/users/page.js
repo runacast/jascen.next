@@ -1,20 +1,17 @@
 import Form from 'next/form'
 import User from '@/components/admin/users/User'
+import { list } from '@/lib/users'
 
 export default async function adminUsers() {
 
-    let users = [], message = null
+    let users = await list(0, 10)
+    let message = null
     
-    /*const response = await fetch('/.netlify/functions/users', {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' }
-    })
 
-    if(!response.ok){
-        message = "Error en el servidor"
-    }
-    
-    users = (await response).json()*/
+    users = users.map(user => ({
+        ...user,
+        _id: user._id.toString()
+    }))
     
     return <>
         <User open={false}><button type='button' className='btn btn-form'>Añadir usuario</button></User>

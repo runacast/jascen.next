@@ -10,11 +10,20 @@ export default function Modal({open, user = {}, children}){
 
         event.preventDefault()
 
-        const formData = new FormData(event.target)
-        const data = Object.fromEntries(formData.entries())
+        const form = new FormData(event.target)
+        const data = {
+            cod: 1,
+            surnames: '',
+            names: '',
+            alias: '',
+            cid: 0,
+            phone: '',
+            email: '',
+            active: true
+        }
 
         try{
-            const response = await fetch('/.netlify/functions/users', {
+            const response = await fetch(`${process.env.BASE_URL}/.netlify/functions/users`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
@@ -51,7 +60,9 @@ export default function Modal({open, user = {}, children}){
     }
 
     return <>
-        <span onClick={() => setVisible(true)}>{children}</span>
+        <form className='form'>
+            <span onClick={() => setVisible(true)}>{children}</span>
+        </form>
         {visible && (
             <div className='modal-background'>
                 <div className='container'>
