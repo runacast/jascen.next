@@ -1,6 +1,6 @@
 import Form from 'next/form'
 import UserModal from '@/components/admin/users/UserModal'
-import UsersClient from '@/components/admin/users/usersClient'
+import UsersClient from '@/components/admin/users/UsersClient'
 
 export default async function adminUsers() {
     
