@@ -14,17 +14,21 @@ export default function Modal({open, user = {}, children}){
         const data = Object.fromEntries(form.entries())
 
         try{
+
             const response = await fetch('/api/users', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
             })
 
-            if (!response.ok) throw new Error('Error en el servidor')
-                const result = await response.json()
+            if(!response.ok){
+                throw new Error('Error en el servidor')
+            }
+            
+            const result = await response.json()
             setVisible(false)
             window.location.reload()
-
+            
         }catch(err){
             console.error(err)
             alert('Ocurrió un error')
