@@ -1,4 +1,3 @@
-import mongoose from 'mongoose'
 import User from '../../src/models/User'
 
 const handler = async (event) => {
