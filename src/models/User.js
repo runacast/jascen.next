@@ -32,7 +32,11 @@ const User = mongoose.models.user || mongoose.model('user', userSchema)
 
 export default async function(){
 
-  const connection = await mongoose.connect(process.env.MONGODB_URI)
+  try{
+    await mongoose.connect(process.env.MONGODB_URI);
+  }catch(err){
+    throw new Error(err)
+  }
 
   return User
 }
