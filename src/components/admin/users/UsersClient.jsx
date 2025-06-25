@@ -10,15 +10,11 @@ export default function UsersClient() {
 
     useEffect(() => {
 
-        const fetchUsers = async () => {    
+        const fetchUsers = async () => {
             try {
                 const res = await fetch('/api/users')
                 const data = await res.json()
-
-                console.log(data)
-
                 setUsers(data)
-                
             } catch (err) {
                 console.error('error getting users: ', err)
             } finally {
