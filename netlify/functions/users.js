@@ -6,7 +6,6 @@ const handler = async (event) => {
   try{
 
     await connectDB()
-
     const method = event.httpMethod
 
     if (method == 'GET') {
@@ -26,8 +25,7 @@ const handler = async (event) => {
         statusCode: 200,
         headers: {
           'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-          'Cache-Control': 'max-age=60'
+          'Access-Control-Allow-Origin': '*'
         },
         body: JSON.stringify(result)
       }
@@ -55,8 +53,7 @@ const handler = async (event) => {
         statusCode: 201,
         headers: {
           'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-          'Cache-Control': 'no-store'
+          'Access-Control-Allow-Origin': '*'
         },
         body: JSON.stringify({ message: 'User inserted' })
       }
@@ -81,8 +78,7 @@ const handler = async (event) => {
         statusCode: 202,
         headers: {
           'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-          'Cache-Control': 'no-store'
+          'Access-Control-Allow-Origin': '*'
         },
         body: JSON.stringify({ message: 'User modified' })
       }
