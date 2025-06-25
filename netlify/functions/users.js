@@ -1,6 +1,8 @@
-import User from '../../src/models/User'
+import Model from '../../src/models/User'
 
 const handler = async (event) => {
+  
+  const User = await Model()
 
   try{
 
