@@ -1,10 +1,11 @@
-import Model from '../../src/models/User'
+import { connectDB } from '../../src/lib/db'
+import User from '../../src/models/User'
 
 const handler = async (event) => {
-  
-  const User = await Model()
 
   try{
+
+    await connectDB()
 
     const method = event.httpMethod
 

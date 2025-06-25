@@ -28,14 +28,6 @@ const userSchema = new Schema({
   }
 })
 
-export default async function(){
+const User = mongoose.models.user || mongoose.model('user', userSchema)
 
-  try{
-    await mongoose.connect(process.env.MONGODB_URI);
-  }catch(err){
-    throw new Error(err)
-  }
-  
-  return mongoose.models.user || mongoose.model('user', userSchema)
-
-}
+export default User
