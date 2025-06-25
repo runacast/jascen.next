@@ -75,7 +75,7 @@ const handler = async (event) => {
       })
 
       return {
-        statusCode: 202,
+        statusCode: 200,
         headers: {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*'
@@ -83,6 +83,22 @@ const handler = async (event) => {
         body: JSON.stringify({ message: 'User modified' })
       }
 
+    }
+    
+    if (method == 'DELETE') {
+
+      const data = JSON.parse(event.body)
+      
+      await User.deleteOne({ _id: data.id })
+
+      return {
+        statusCode: 200,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        },
+        body: JSON.stringify({ message: 'User deleted' })
+      }
     }
 
   }catch(e){

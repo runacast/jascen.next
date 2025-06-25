@@ -43,12 +43,19 @@ export default function Modal({open, user = {}, children}){
             return
         }
         
-        const form = new FormData()
-        form.append('id', user._id)
         try {
-            alert('Usuario eliminado')
+            
+            const response = await fetch('/api/users', {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id : user._id })
+            })
+
+            if(!response.ok){
+                throw new Error('Error en el servidor')
+            }
+
             setVisible(false)
-            // Recargar la página para mostrar los cambios
             window.location.reload()
         }catch(err){
             console.error('Error al eliminar:', err)
