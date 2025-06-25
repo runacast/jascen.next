@@ -11,13 +11,24 @@ const handler = async (event) => {
 
     if (method == 'GET') {
 
+      const params = new URLSearchParams(event.rawUrl.split('?')[1]),
+      page = parseInt(params.get('page')) || 1,
+      limit = parseInt(params.get('limit')) || 10,
+      skip = (page - 1) * limit,
+      users = await User.find({}).skip(skip).limit(limit)
+
+       const result = users.map(user => ({
+        ...user.toObject(),
+        _id: user._id.toString()
+      }))
+
       return {
         statusCode: 200,
         headers: {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*'
         },
-        body: JSON.stringify({ message: 'Get success!' })
+        body: JSON.stringify(result)
       }
 
     }
@@ -78,7 +89,7 @@ const handler = async (event) => {
   }catch(e){
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: 'Error not found server.' })
+      body: JSON.stringify({ error: 'Server error, request not defined.' })
     }
   }
 

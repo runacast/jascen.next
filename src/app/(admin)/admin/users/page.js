@@ -3,9 +3,11 @@ import User from '@/components/admin/users/User'
 import { list } from '@/lib/users'
 
 export default async function adminUsers() {
-
-    const users = await list(0, 10)
+    
     let message = null
+
+    const res = await fetch('https://jascen.netlify.app/api/test')
+    const data = await res.json()
     
     return <>
         <User open={false}><button type='button' className='btn btn-form'>Añadir usuario</button></User>
@@ -29,7 +31,7 @@ export default async function adminUsers() {
                     </tr>
                 </thead>
                 <tbody>
-                    {users.map((user, index) => (
+                    {data.map((user, index) => (
                         <tr key={index}>
                             <td>{user.cod}</td>
                             <td><User open={false} user={user}><a href='#'>{user.surnames} {user.names}</a></User></td>
