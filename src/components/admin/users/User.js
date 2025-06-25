@@ -12,11 +12,12 @@ export default function Modal({open, user = {}, children}){
 
         const form = new FormData(event.target)
         const data = Object.fromEntries(form.entries())
+        const methodType = form.get('id') ? 'PUT' : 'POST'
 
         try{
-
+            
             const response = await fetch('/api/users', {
-                method: 'POST',
+                method: methodType,
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
             })
@@ -28,7 +29,7 @@ export default function Modal({open, user = {}, children}){
             const result = await response.json()
             setVisible(false)
             window.location.reload()
-            
+
         }catch(err){
             console.error(err)
             alert('Ocurrió un error')
@@ -64,11 +65,11 @@ export default function Modal({open, user = {}, children}){
                         <form className='form' onSubmit={handleSubmit}>
                             <legend>{user._id ? 'Editar datos de usuario' : 'Ingresa los datos del usuario'}</legend>
                             {user._id && <input type='hidden' name='id' value={user._id} />}
-                            <fieldset className='field-group row'>
+                            {user._id && (<fieldset className='field-group row'>
                                 <div className='col-6 form-area'>
                                     <label className='sec-3'>Código</label><input className='sec-2' type='number' name='codigo' defaultValue={user.cod || ''} />
                                 </div>
-                            </fieldset>
+                            </fieldset>)}
                             <fieldset className='field-group row'>
                                 <div className='col-6 form-area'>
                                     <label className='sec-3'>Apellidos</label><input className='sec-7' required type='text' name='apellidos' defaultValue={user.surnames || ''} />
