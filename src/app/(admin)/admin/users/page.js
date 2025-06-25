@@ -1,16 +1,11 @@
 import Form from 'next/form'
-import User from '@/components/admin/users/User'
-import { list } from '@/lib/users'
+import UserModal from '@/components/admin/users/UserModal'
+import UsersClient from '@/components/admin/users/usersClient'
 
 export default async function adminUsers() {
     
-    let message = null
-
-    const res = await fetch('https://jascen.netlify.app/api/test')
-    const data = await res.json()
-    
     return <>
-        <User open={false}><button type='button' className='btn btn-form'>Añadir usuario</button></User>
+        <UserModal open={false}><button type='button' className='btn btn-form'>Añadir usuario</button></UserModal>
         <Form className='form'>
             <fieldset>
                 <div className='field-group'>
@@ -20,28 +15,7 @@ export default async function adminUsers() {
             </fieldset>
         </Form>
         <div className='v-overflow'>
-            <table className='table'>
-                <thead>
-                    <tr>
-                        <th>N°</th>
-                        <th>Apellidos y nombres</th>
-                        <th>Apodo</th>
-                        <th>Cédula</th>
-                        <th>Estado</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {data.map((user, index) => (
-                        <tr key={index}>
-                            <td>{user.cod}</td>
-                            <td><User open={false} user={user}><a href='#'>{user.surnames} {user.names}</a></User></td>
-                            <td>{user.alias}</td>
-                            <td>{user.cid}</td>
-                            <td>{user.status ? "activo" : "inactivo"}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+            <UsersClient></UsersClient>
         </div>
     </>
 }
