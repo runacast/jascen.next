@@ -1,10 +1,7 @@
 import mongoose from 'mongoose'
 
 const { Schema } = mongoose
-
-const connection = async () => {
-  await mongoose.connect(process.env.MONGODB_URI)
-}
+await mongoose.connect(process.env.MONGODB_URI)
 
 const userSchema = new Schema({
   cod: Number,
@@ -30,10 +27,6 @@ const userSchema = new Schema({
     type: Boolean,
     default: true
   }
-})
-
-await connection().catch(error => {
-  throw new Error(error.message)
 })
 
 const User = mongoose.models.user || mongoose.model('user', userSchema)
