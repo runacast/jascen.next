@@ -28,8 +28,6 @@ const userSchema = new Schema({
   }
 })
 
-const User = mongoose.models.user || mongoose.model('user', userSchema)
-
 export default async function(){
 
   try{
@@ -37,6 +35,7 @@ export default async function(){
   }catch(err){
     throw new Error(err)
   }
+  
+  return mongoose.models.user || mongoose.model('user', userSchema)
 
-  return User
 }
