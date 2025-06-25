@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import UserModal from '@/components/admin/users/UserModal'
 
 export default function UsersClient() {
 
@@ -14,10 +15,9 @@ export default function UsersClient() {
                 const res = await fetch('/api/users')
                 const data = await res.json()
 
-                setUsers(data.map(user => ({
-                    ...user.toObject(),
-                    _id: user._id.toString()
-                })))
+                console.log(data)
+
+                setUsers(data)
                 
             } catch (err) {
                 console.error('error getting users: ', err)
@@ -45,7 +45,7 @@ export default function UsersClient() {
             {users.map((user, index) => (
                 <tr key={index}>
                     <td>{user.cod}</td>
-                    <td><User open={false} user={user}><a href='#'>{user.surnames} {user.names}</a></User></td>
+                    <td><UserModal open={false} user={user}><a href='#'>{user.surnames} {user.names}</a></UserModal></td>
                     <td>{user.alias}</td>
                     <td>{user.cid}</td>
                     <td>{user.status ? "activo" : "inactivo"}</td>
