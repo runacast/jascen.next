@@ -1,6 +1,11 @@
 import mongoose from 'mongoose'
 
 const { Schema } = mongoose
+
+const connection = async () => {
+  await mongoose.connect(process.env.MONGODB_URI)
+}
+
 const userSchema = new Schema({
   cod: Number,
   surnames: String,
@@ -27,13 +32,10 @@ const userSchema = new Schema({
   }
 })
 
-const connection = async () => {
-  await mongoose.connect(process.env.MONGODB_URI).
-  catch(error => {
-     throw new Error(error.message)
-  })
-}
+await connection().catch(error => {
+  throw new Error(error.message)
+})
 
-const User = mongoose.models.user || connection.model('user', userSchema)
+const User = mongoose.models.user || mongoose.model('user', userSchema)
 
 export default User
