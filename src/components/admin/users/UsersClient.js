@@ -13,7 +13,12 @@ export default function UsersClient() {
             try {
                 const res = await fetch('/api/users')
                 const data = await res.json()
-                setUsers(data)
+
+                setUsers(data.map(user => ({
+                    ...user.toObject(),
+                    _id: user._id.toString()
+                })))
+                
             } catch (err) {
                 console.error('error getting users: ', err)
             } finally {
