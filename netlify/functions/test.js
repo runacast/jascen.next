@@ -1,10 +1,10 @@
 import { connectDB } from '../../src/lib/db'
 import User from '../../src/models/User'
 
-export const handler = async (event) => {
+const handler = async (event) => {
 
   try {
-    
+
     await connectDB()
 
     const users = await User.find({})
