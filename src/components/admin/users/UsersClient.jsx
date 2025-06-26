@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import UserModal from '@/components/admin/users/UserHeader'
+import Modal from '@/components/admin/users/Modal'
 
 export default function UsersClient() {
 
@@ -43,7 +43,7 @@ export default function UsersClient() {
             {users.map((user, index) => (
                 <tr key={index}>
                     <td>{user.cod}</td>
-                    <td><UserModal open={false} user={user}><a href='#'>{user.surnames} {user.names}</a></UserModal></td>
+                    <td><Modal open={false} user={user}><a href='#'>{user.surnames} {user.names}</a></Modal></td>
                     <td>{user.alias}</td>
                     <td>{user.cid}</td>
                     <td>{user.status ? "activo" : "inactivo"}</td>
