@@ -50,7 +50,7 @@ export default function PaymentModal({children}){
                             </fieldset>
                             <fieldset>
                                 <div className='v-overflow'>
-                                    <table className='table'>
+                                    <table className='table table-bill'>
                                         <thead>
                                             <tr>
                                                 <th>Contador</th>

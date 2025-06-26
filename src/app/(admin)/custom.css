@@ -38,18 +38,24 @@ body{
     margin-right: 10px;
 }
 
+.table-bill{
+    height: 500px;
+    display: block;
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
 .table-bill thead{
     text-transform: uppercase;
     background-color: rgb(192, 192, 192);
     color: #000000;
     display: block;
+    position: fixed;
 }
 
 .table-bill tbody{
-    height: 500px;
-    display: block;
-    overflow-y: auto;
-    overflow-x: auto;
+    padding-top: 20px;
+    margin-top: 50px;
 }
 
 .table-bill tbody tr{
