@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import UserModal from '@/components/admin/users/UserModal'
+import UserModal from '@/components/admin/users/UserHeader'
 
 export default function UsersClient() {
 
@@ -27,7 +27,9 @@ export default function UsersClient() {
 
     if (loading) return <p>Cargando usuarios...</p>
 
-    return <table className='table'>
+    return <>
+
+    <table className='table'>
         <thead>
             <tr>
                 <th>N°</th>
@@ -49,4 +51,5 @@ export default function UsersClient() {
             ))}
         </tbody>
     </table>
+    </>
 }

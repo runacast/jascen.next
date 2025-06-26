@@ -16,18 +16,26 @@ body{
     padding: 15px;
 }
 
-.session-panel{
-    margin: 0 auto;
-    max-width: 800px;
+/* Form style */
+.form{
+    padding: 0px;
 }
 
-.modal-background{
-    z-index: 1;
+.form .field-group{
+    padding: 5px;
+}
+
+/* Content style */
+.ses-panel{
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 900px;
 }
 
 .container .content{
-    margin-left: 20px;
-    margin-right: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 .table-bill thead{
@@ -69,6 +77,10 @@ body{
     margin: 0 auto;
     margin-top: 40px;
     padding: 20px;
+}
+
+.modal-background{
+    z-index: 1;
 }
 
 /* other styles */

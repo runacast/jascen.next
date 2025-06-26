@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 
-export default function Modal({open, user = {}, children}){
+export default function Header({modal, user = {}, children}){
 
     const [visible, setVisible] = useState(false)
 
@@ -64,7 +64,24 @@ export default function Modal({open, user = {}, children}){
     }
 
     return <>
-        <span onClick={() => setVisible(true)}>{children}</span>
+        <form className='form'>
+            <fieldset className='row'>
+                <div className='field-group col-10'>
+                    <input type='text' name='value' className='input-attach' placeholder='Ingresa busqueda' />
+                    <select className='input-attach' defaultValue={0}>
+                        <option>- Buscar por -</option>
+                        <option value='apellidos'>Apellidos</option>
+                        <option value='nombres'>Nombres</option>
+                        <option value='apodo'>Apodo</option>
+                        <option value='codigo'>Código</option>
+                    </select>
+                </div>
+                <div className='field-group col-2'>
+                <button type='button' className='btn btn-form' onClick={() => setVisible(true)}>Añadir usuario</button>
+            </div>
+            </fieldset>
+        </form>
+        <hr></hr>
         {visible && (
             <div className='modal-background'>
                 <div className='container'>
