@@ -1,6 +1,6 @@
 import Form from 'next/form'
-import PaymentsClient from '@/components/admin/payments/PaymentsClient'
-import PaymentHeader from '@/components/admin/payments/paymentHeader'
+import Header from '@/components/admin/payments/Header'
+import Panel from '@/components/admin/payments/Panel'
 
 export default async function Calendar(){
 
@@ -13,9 +13,7 @@ export default async function Calendar(){
 
     return <div className='ses-panel'>
         <h3>Fecha actual {date.toDateString()}</h3>
-        <PaymentHeader/>
-        <Form className='form'>
-            <PaymentsClient></PaymentsClient>
-        </Form>
+        <Header/>
+        <Panel/>
     </div>
 }

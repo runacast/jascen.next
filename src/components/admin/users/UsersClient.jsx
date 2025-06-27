@@ -12,7 +12,7 @@ export default function UsersClient() {
 
         const fetchUsers = async () => {
             try {
-                const res = await fetch('/api/users')
+                const res = await fetch('/api/users', {method:'GET'})
                 const data = await res.json()
                 setUsers(data)
             } catch (err) {

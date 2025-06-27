@@ -38,39 +38,27 @@ body{
     margin-right: 10px;
 }
 
-.table-bill{
-    height: 500px;
-    display: block;
-    overflow-y: auto;
+.table-container{
+    max-width: 100%;
+    max-height: 500px;
     overflow-x: auto;
+    overflow-y: auto;
 }
 
-.table-bill thead{
-    text-transform: uppercase;
-    background-color: rgb(192, 192, 192);
-    color: #000000;
-    display: block;
-    position: fixed;
+.table-container table{
+    width: 100%;
+    border-collapse: collapse;
 }
 
-.table-bill tbody{
-    padding-top: 20px;
-    margin-top: 50px;
+.table-container thead{
+    background-color: rgb(54, 54, 54);
+    color: aliceblue;
 }
 
-.table-bill tbody tr{
-    border-bottom: 1px solid #c0c0c0;
-}
-
-.table-bill tfoot{
-    display: block;
-}
-
-.section-bill .row-bill{
-    line-height: 30px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
+.table-container th, .table-container td{
+    padding: 20px 30px 20px 30px;
+    text-align: left;
+  }
 
 /* Modal style */
 .modal-background .container .content{
