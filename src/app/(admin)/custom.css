@@ -38,6 +38,13 @@ body{
     margin-right: 10px;
 }
 
+/* Footer style */
+#footer .content{
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 900px;
+}
+
 .table-container{
     max-width: 100%;
     max-height: 500px;
