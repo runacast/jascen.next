@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 
 export default function Panel(){
 
-    const [orders, setOrders] = useState([])
+    const [registers, setRegisters] = useState([])
 
     useEffect(() => {
         const fetchOrders = async () => {
@@ -16,7 +16,7 @@ export default function Panel(){
     return <div className='tb-panel'>
         <table className='table'>
             <tbody>
-                {orders.map((order, index) => (
+                {registers.map((order, index) => (
                     <tr>
                         <td>{order.title}</td>
                     </tr>

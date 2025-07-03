@@ -8,6 +8,7 @@ const taxes = 0.00
 export default function PaymentModal({children}){
     
     const [visible, setVisible] = useState(false),
+    [userInfo, setUserInfo] = useState({}),
     [charges, setCharges] = useState([]),
     months = getMonths(),
     registerPay = async (event) => {
@@ -15,20 +16,23 @@ export default function PaymentModal({children}){
 
         const form = new FormData(event.target),
         field = form.get('field'),
-        value = form.get('value')
-        res = await fetch(`/api/payments?key=${field}&val=${value}`, {method: 'GET'})
-        const payment = await res.json()
+        value = form.get('value'),
+        response = await fetch(`/api/user?key=${field}&val=${value}`, {method: 'GET'}),
+        user = await response.json()
 
-        if(payment){
+        if(user){
 
+            const response1 = await fetch(`/api/payments?key=cid&value=${value}`,{method: 'GET'}),
+            payment = await response1.json()
             let count = 1
-            const list = payment.payouts.map( (info, index) => {
+            const list = payment.charges.map( (info, index) => {
                 if(info.id !== months.id){
                     count = count + 1
                     info.count = count
                     return info
                 }
             })
+            setUserInfo(user)
             setCharges(list)
 
         }
@@ -40,8 +44,8 @@ export default function PaymentModal({children}){
             <fieldset className='field-group'>
                 <input className='input-attach' type='number' required placeholder='Ingresa el identificador' name='value' />
                 <select className='input-attach' name='field'>
-                    <option value='cedula'>Cédula</option>
-                    <option value='codigo'>Código</option>
+                    <option value='cid'>Cédula</option>
+                    <option value='cod'>Código</option>
                 </select>
                 <button type='submit' className="btn btn-form input-attach">Registrar pago</button>
             </fieldset>
@@ -53,16 +57,16 @@ export default function PaymentModal({children}){
                         <form className='form'>
                             <fieldset>
                                 <div className='row'>
-                                    <div className='col-4'>Nombres y Apellidos</div>
-                                    <div className='col-8'>...</div>
+                                    <div className='col-4'>Apellidos y Nombres</div>
+                                    <div className='col-8'>{userInfo.surnames} {userInfo.names}</div>
                                 </div>
                                 <div className='row'>
                                     <div className='col-4'>Cédula</div>
-                                    <div className='col-8'>....</div>
+                                    <div className='col-8'>{userInfo.cid}</div>
                                 </div>
                                 <div className='row'>
                                     <div className='col-4'>Código</div>
-                                    <div className='col-8'>1</div>
+                                    <div className='col-8'>{userInfo.cod}</div>
                                 </div>
                             </fieldset>
                             <div className="table-container">

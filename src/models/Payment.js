@@ -1,7 +1,10 @@
 import { Schema } from 'mongoose'
 
 const paymentSchema = new Schema({
-    ide: String,
+    ide: {
+        type: Number,
+        unique: true
+    },
     cid: Number,
     cod: Number,
     date: {

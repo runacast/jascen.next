@@ -1,12 +1,19 @@
 import mongoose from 'mongoose'
+import { unique } from 'next/dist/build/utils'
 
 const { Schema } = mongoose
 
 const userSchema = new Schema({
-  cod: Number,
+  cod: {
+    type: Number,
+    unique: true
+  },
+  cid: {
+    type: Number,
+    unique: true
+  },
   surnames: String,
   names: String,
-  cid: Number,
   alias: {
     type: String,
     require: false,

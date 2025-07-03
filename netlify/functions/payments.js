@@ -9,26 +9,28 @@ const handler = async (event) => {
       const method = event.httpMethod
 
       if (method == 'GET') {
+
         const params = new URLSearchParams(event.rawUrl.split('?')[1]),
         filter = {},
-        key = params.get('cid') || '_id',
-        val = params.get(key) || null,
+        key = params.get('key') || '_id',
+        value = params.get('value') || null,
         start = params.get('page') || 1,
         limit = params.get('limit') || 0,
         skip = (start - 1) * limit
 
-        if (val) filter[key] = val
+        if (value) filter[key] = value
 
         const payments = await Payment.find(filter).skip(skip).limit(limit)
 
         return {
-        statusCode: 200,
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        },
-        body: JSON.stringify(payments)
-      }
+          statusCode: 200,
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+          },
+          body: JSON.stringify(payments)
+        }
+      
       }
 
     }catch(err){
