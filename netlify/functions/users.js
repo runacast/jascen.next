@@ -11,18 +11,15 @@ const handler = async (event) => {
     if (method == 'GET') {
 
       const params = new URLSearchParams(event.rawUrl.split('?')[1]),
-      filter = {}
-      cid = parseInt(params.get('cid')) || 0,
-      cod = parseInt(params.get('cod')) || 0,
+      filter = {},
+      key = params.get('key') || '_id',
+      val = params.get(key) || null,
       page = parseInt(params.get('page')) || 1,
-      limit = parseInt(params.get('limit')) || 10,
+      limit = parseInt(params.get('limit')) || 0,
       skip = (page - 1) * limit
 
-      if(cid){
-        filter['cid'] = cid
-      }
-      if(cod){
-        filter['cod'] = cod
+      if(val){
+        filter[key] = val
       }
 
       const users = await User.find(filter).skip(skip).limit(limit),

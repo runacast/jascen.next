@@ -1,0 +1,19 @@
+import { Schema } from 'mongoose'
+
+const paymentSchema = new Schema({
+    ide: String,
+    cid: Number,
+    cod: Number,
+    date: {
+        type: Date,
+        default: Date()
+    },
+    charges: {
+        type: Array,
+        default: []
+    }
+})
+
+const Payment = mongoose.models.payment || mongoose.model('payment', paymentSchema)
+
+export default Payment

@@ -3,32 +3,43 @@
 import { useState } from 'react'
 
 const serviceValue = 2.00
+const taxes = 0.00
 
 export default function PaymentModal({children}){
     
     const [visible, setVisible] = useState(false),
     [charges, setCharges] = useState([]),
-
+    months = getMonths(),
     registerPay = async (event) => {
         event.preventDefault()
 
-         const res = await fetch('/api/users',{
-            method: 'GET'
-         })
+        const form = new FormData(event.target),
+        field = form.get('field'),
+        value = form.get('value')
+        res = await fetch(`/api/payments?key=${field}&val=${value}`, {method: 'GET'})
+        const payment = await res.json()
 
-        setCharges(getMonths().map(info => ({
-            ...info,
-            value:serviceValue,
-            tax:0.00
-        })))
+        if(payment){
+
+            let count = 1
+            const list = payment.payouts.map( (info, index) => {
+                if(info.id !== months.id){
+                    count = count + 1
+                    info.count = count
+                    return info
+                }
+            })
+            setCharges(list)
+
+        }
         setVisible(true)
     }
 
     return <>
         <form className='form' onSubmit={registerPay}>
             <fieldset className='field-group'>
-                <input className='input-attach' type='number' required placeholder='Ingresa el identificador' />
-                <select className='input-attach'>
+                <input className='input-attach' type='number' required placeholder='Ingresa el identificador' name='value' />
+                <select className='input-attach' name='field'>
                     <option value='cedula'>Cédula</option>
                     <option value='codigo'>Código</option>
                 </select>
@@ -118,8 +129,11 @@ function getMonths(year = 2015, index = 0){
         const year = current.getFullYear()
         const month = current.getMonth() // 0-11
         monthsCharge.push({
+            id: `${year}${String(month + 1).padStart(2, '0')}`,
             detail: `${months[month]} ${year}`,
-            date: `${String(month + 1).padStart(2, '0')}/${year}`
+            date: `${String(month + 1).padStart(2, '0')}/${year}`,
+            taxes,
+            value: serviceValue
         })
 
         current.setMonth(current.getMonth() + 1)
