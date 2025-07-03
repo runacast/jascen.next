@@ -13,12 +13,14 @@ const handler = async (event) => {
       const params = new URLSearchParams(event.rawUrl.split('?')[1]),
       filter = {},
       key = params.get('key') || '_id',
-      value = params.get('value') || null,
+      val = params.get('value') || null,
       page = parseInt(params.get('page')) || 1,
       limit = parseInt(params.get('limit')) || 0,
       skip = (page - 1) * limit
 
-      if(value) filter[key] = value
+      if(val){
+        filter[key] = val
+      }
 
       const users = await User.find(filter).skip(skip).limit(limit),
       result = users.map(user => ({
