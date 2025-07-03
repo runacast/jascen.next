@@ -17,8 +17,10 @@ export default function PaymentModal({children}){
         const form = new FormData(event.target),
         field = form.get('field'),
         value = form.get('value'),
-        response = await fetch(`/api/users?key=${field}&value=${value}`, {method:'GET'}),
+        response = await fetch(`/api/users?key=${field}&value=${value}`,{method:'GET'}),
         user = await response.json()
+
+        setUserInfo(user[0])
 
         if(user){
 
@@ -32,7 +34,6 @@ export default function PaymentModal({children}){
                     return info
                 }
             })
-            setUserInfo(user)
             setCharges(list)
 
         }
