@@ -84,3 +84,9 @@ body{
 .capilalize{
     text-transform: capitalize;   
 }
+
+/* Button panel styles */
+.btn-panel{
+    padding: 16px;
+    cursor: pointer;
+}

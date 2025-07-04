@@ -17,23 +17,27 @@ export default function PaymentModal({children}){
         const form = new FormData(event.target),
         field = form.get('field'),
         value = form.get('value'),
-        response = await fetch(`/api/users?key=${field}&value=${value}`,{method:'GET'}),
+        response = await fetch(`https://jascen.netlify.app/api/users?key=${field}&value=${value}`,{method:'GET'}),
         user = await response.json()
 
         setUserInfo(user[0])
 
         if(user){
 
-            const response1 = await fetch(`/api/payments?key=cid&value=${value}`,{method:'GET'}),
+            const response1 = await fetch(`https://jascen.netlify.app/api/payments?key=cid&value=${value}`,{method:'GET'}),
             payment = await response1.json()
-            let count = 1
-            const list = payment.charges.map( (info, index) => {
-                if(info.id !== months.id){
-                    count = count + 1
-                    info.count = count
-                    return info
-                }
-            })
+            let count = 1,
+            list = []
+            if(payment.charges){
+                list = payment.charges.map((info, index) => {
+                    if (info.id !== months.id) {
+                        count = count + 1
+                        info.count = count
+                        return info
+                    }
+                })
+            }
+            
             setCharges(list)
 
         }

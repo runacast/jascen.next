@@ -46,7 +46,7 @@ export default function UsersClient() {
                     <td><Modal open={false} user={user}><a href='#'>{user.surnames} {user.names}</a></Modal></td>
                     <td>{user.alias}</td>
                     <td>{user.cid}</td>
-                    <td>{user.status ? "activo" : "inactivo"}</td>
+                    <td>{user.active ? "activo" : "inactivo"}</td>
                 </tr>
             ))}
         </tbody>
