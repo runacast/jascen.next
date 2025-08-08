@@ -2,7 +2,10 @@
 
 import { useState } from 'react'
 
-const serviceValue = 2.00
+const start_year = 2015
+const start_month = 0
+const valueA = 1.00
+const valueB = 2.00
 const taxes = 0.00
 
 export default function PaymentModal({children}){
@@ -10,38 +13,81 @@ export default function PaymentModal({children}){
     const [visible, setVisible] = useState(false),
     [userInfo, setUserInfo] = useState({}),
     [charges, setCharges] = useState([]),
-    months = getMonths(),
+    [bill, setBill] = useState({remaining:0,taxes:0.00,total:0.00,balance:0.00}),
+    months = getMonths(start_year, start_month),
+
     registerPay = async (event) => {
         event.preventDefault()
 
         const form = new FormData(event.target),
         field = form.get('field'),
         value = form.get('value'),
-        response = await fetch(`https://jascen.netlify.app/api/users?key=${field}&value=${value}`,{method:'GET'}),
-        user = await response.json()
+        response = await fetch(`/api/users?key=${field}&value=${value}`,{method:'GET'}),
+        user = await response.json(),
+        list = getMonths()
 
         setUserInfo(user[0])
 
         if(user){
 
-            const response1 = await fetch(`https://jascen.netlify.app/api/payments?key=cid&value=${value}`,{method:'GET'}),
+            const response1 = await fetch(`/api/payments?key=cid&value=${value}`,{method:'GET'}),
             payment = await response1.json()
-            let count = 1,
-            list = []
-            if(payment.charges){
-                list = payment.charges.map((info, index) => {
-                    if (info.id !== months.id) {
-                        count = count + 1
-                        info.count = count
-                        return info
-                    }
-                })
-            }
+
+            bill.remaining = list.length
+            bill.total = list.reduce((acumulador, item) => acumulador + item.value, 0)
+            bill.balance = bill.total
+            setBill(bill)
             
             setCharges(list)
 
         }
         setVisible(true)
+
+    },
+
+    reCalculateBill = (event) => {
+        setBill({
+            remaining:  bill.remaining,
+            taxes:  0.00,
+            total:  bill.total,
+            balance:  parseFloat(bill.total - event.target.value)
+        })
+        event.target.value = (event.target.value > bill.total || event.target.value == '') ? (0.00).toFixed(2) : event.target.value
+    },
+
+    handleSubmit = async (event) => {
+        event.preventDefault()
+
+        const date = new Date(),
+        form = new FormData(event.target),
+        data = {
+            ide: `${date.getMonth()}${date.getUTCFullYear()}${form.get('cod')}`,
+            cid: form.get('cid'),
+            cod: form.get('cod'),
+            paid: []
+        }
+
+        try{
+            const response = await fetch('/api/payments', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+
+            if(!response.ok){
+                throw new Error('Error en el servidor')
+            }
+            
+            const result = await response.json()
+            setVisible(false)
+            console.log(result)
+            //window.location.reload()
+
+        }catch(err){
+            console.error(err)
+            alert('Ocurrió un error')
+        }
+        
     }
 
     return <>
@@ -59,7 +105,9 @@ export default function PaymentModal({children}){
             <div className='modal-background'>
                 <div className='container'>
                     <div className='content'>
-                        <form className='form'>
+                        <form className='form' onSubmit={handleSubmit}>
+                            <input type='hidden' name='cod' value={userInfo.cod} />
+                            <input type='hidden' name='cid' value={userInfo.cid} />
                             <fieldset>
                                 <div className='row'>
                                     <div className='col-4'>Apellidos y Nombres</div>
@@ -78,7 +126,7 @@ export default function PaymentModal({children}){
                                 <table>
                                     <thead>
                                         <tr>
-                                            <th style={{width:10}}>Contado</th>
+                                            <th style={{width:10}}>Cont.</th>
                                             <th>Fecha</th>
                                             <th style={{width:500}}>Detalle</th>
                                             <th style={{width:50}}>Subtotal</th>
@@ -86,8 +134,8 @@ export default function PaymentModal({children}){
                                     </thead>
                                     <tbody>{charges.map((info, index) => (
                                         <tr key={index}>
-                                            <td>{index}</td>
-                                            <td>{info.date}</td>
+                                            <td>{index + 1}</td>
+                                            <td>{String(info.month).padStart(2, '0')}/{info.year}</td>
                                             <td>{info.detail}</td>
                                             <td>${info.value.toFixed(2)}</td>
                                         </tr>
@@ -97,19 +145,23 @@ export default function PaymentModal({children}){
                             <fieldset>
                                 <div className='row'>
                                     <div className='col-4'>Meses faltantes</div>
-                                    <div className='col-8'>5</div>
+                                    <div className='col-8'>{bill.remaining}</div>
                                 </div>
                                 <div className='row'>
                                     <div className='col-4'>Total adeudado</div>
-                                    <div className='col-8'>$200</div>
+                                    <div className='col-8'>${bill.total.toFixed(2)}</div>
+                                </div>
+                                <div className='row'>
+                                    <div className='col-4'>Faltante a cancelar</div>
+                                    <div className='col-8'>${bill.balance.toFixed(2)}</div>
                                 </div>
                                 <div className='row'>
                                     <div className='col-4'>Valor a pagar</div>
-                                    <div className='col-8'><input type='number' defaultValue={(0.00).toFixed(2)}/></div>
+                                    <div className='col-8'><input type='number' onChange={reCalculateBill} defaultValue={(0.00).toFixed(2)}/></div>
                                 </div>
                             </fieldset>
                             <fieldset className='field-group'>
-                                <button type='button' className='btn btn-form'>Registrar pago</button>
+                                <button type='submit' className='btn btn-form'>Registrar pago</button>
                                 <button type='button' onClick={(event) => {setVisible(false)}} className='btn btn-form'>Cancelar</button>
                             </fieldset>
                         </form>
@@ -122,29 +174,33 @@ export default function PaymentModal({children}){
 
 function getMonths(year = 2015, index = 0){
 
-    const start = new Date(year, index) // enero 2015
-    const today = new Date()
-    const monthsCharge = []
-
-    const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+    const start = new Date(year, index), // enero 2015
+    today = new Date(),
+    monthsCharge = [],
+    months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
         'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
 
-    let current = new Date(start)
+    let current = new Date(start), count = 1
 
     while (
         current.getFullYear() < today.getFullYear() ||
         (current.getFullYear() === today.getFullYear() && current.getMonth() <= today.getMonth())
     ) {
         const year = current.getFullYear()
-        const month = current.getMonth() // 0-11
-        monthsCharge.push({
+        const month = current.getMonth(), // 0-11
+        item = {
             id: `${year}${String(month + 1).padStart(2, '0')}`,
             detail: `${months[month]} ${year}`,
-            date: `${String(month + 1).padStart(2, '0')}/${year}`,
-            taxes,
-            value: serviceValue
-        })
-
+            month: month + 1,
+            year: year
+        }
+        if(count >= 1 && count <= 36){
+            item.value = valueA
+        }else{
+            item.value = valueB
+        }
+        monthsCharge.push(item)
+        count = count + 1
         current.setMonth(current.getMonth() + 1)
     }
 

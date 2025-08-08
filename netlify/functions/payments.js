@@ -33,6 +33,23 @@ const handler = async (event) => {
       
       }
 
+      if (method == 'POST') {
+
+        const count = await Payment.countDocuments()
+        const data = JSON.parse(event.body)
+
+        const payment = new Payment({
+          ide: parseInt(`${count}${data.ide}`),
+          cid: data.cid,
+          cod: data.cod,
+          date: new Date(),
+          paid: data.paid
+        })
+        
+        await payment.save()
+
+      }
+
     }catch(err){
       return {
         statusCode: 500,

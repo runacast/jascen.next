@@ -11,9 +11,9 @@ const paymentSchema = new Schema({
     cod: Number,
     date: {
         type: Date,
-        default: Date()
+        default: new Date()
     },
-    charges: {
+    paid: {
         type: Array,
         default: []
     }
