@@ -35,7 +35,7 @@ const handler = async (event) => {
 
     if (method == 'POST') {
 
-      /*const count = await Payment.countDocuments()
+      const count = await Payment.countDocuments()
       const data = JSON.parse(event.body)
 
       const payment = new Payment({
@@ -46,7 +46,7 @@ const handler = async (event) => {
         paid: data.paid
       })
       
-      await payment.save()*/
+      await payment.save()
 
       return {
         statusCode: 201,
