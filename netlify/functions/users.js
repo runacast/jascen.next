@@ -1,5 +1,5 @@
-import { connectDB } from '../../src/lib/db'
-import User from '../../src/models/User'
+import { connectDB } from '../../src/lib/db.js'
+import User from '../../src/models/User.js'
 
 const handler = async (event) => {
 
