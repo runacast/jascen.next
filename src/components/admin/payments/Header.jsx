@@ -61,7 +61,7 @@ export default function PaymentModal({children}){
         const date = new Date(),
         form = new FormData(event.target),
         data = {
-            ide: `${date.getMonth()}${date.getUTCFullYear()}${form.get('cod')}`,
+            ide: `${date.getMonth()}${date.getYear()}${form.get('cod')}`,
             cid: form.get('cid'),
             cod: form.get('cod'),
             paid: []

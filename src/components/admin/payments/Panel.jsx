@@ -15,15 +15,22 @@ export default function Panel(){
         }
 
         fetchOrders()
-        
+
     }, [])
     
     return <div className='tb-panel'>
         <table className='table'>
+            <thead>
+                <tr>
+                    <th>Clave de registro</th>
+                    <th>Fecha de pago</th>
+                </tr>
+            </thead>
             <tbody>
                 {registers.map((order, index) => (
-                    <tr>
-                        <td>{order.title}</td>
+                    <tr key={index}>
+                        <td>{order.ide}</td>
+                        <td>{(new Date(order.date)).toDateString()}</td>
                     </tr>
                 ))}
             </tbody>
