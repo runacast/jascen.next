@@ -80,8 +80,7 @@ export default function PaymentModal({children}){
             
             const result = await response.json()
             setVisible(false)
-            console.log(result)
-            //window.location.reload()
+            window.location.reload()
 
         }catch(err){
             console.error(err)

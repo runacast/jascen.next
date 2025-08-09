@@ -5,16 +5,22 @@ import { useEffect, useState } from 'react'
 export default function Panel(){
 
     const [registers, setRegisters] = useState([])
+    const [message, setMessage] = useState('')
 
     useEffect(() => {
 
-        const fetchOrders = async () => {
-            const response = await fetch('/api/payments?page=1&limit=10',{method:'GET'})
-            const result = await response.json()
-            setRegisters(result)
+        try {
+            fetch('/api/payments?page=1&limit=10',{method:'GET'})
+            .then((res) => {
+                if(res.ok){
+                    return res.json()
+                }
+            }).then((res) => {
+                setRegisters(res)
+            })
+        } catch (err){
+            alert('Error:'+err.message)
         }
-
-        fetchOrders()
 
     }, [])
     
