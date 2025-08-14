@@ -11,10 +11,10 @@ export default async function adminUsers() {
                         <input type='text' name='value' className='input-attach' placeholder='Ingresa busqueda' />
                         <select className='input-attach' defaultValue={0}>
                             <option>- Buscar por -</option>
-                            <option value='apellidos'>Apellidos</option>
-                            <option value='nombres'>Nombres</option>
-                            <option value='apodo'>Apodo</option>
+                            <option value='cedula'>Cédula</option>
                             <option value='codigo'>Código</option>
+                            <option value='nombresApellidos'>Nombres o Apellidos</option>
+                            <option value='apodo'>Apodo</option>
                         </select>
                     </fieldset>
                 </form>

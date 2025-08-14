@@ -8,7 +8,7 @@ const valueA = 1.00
 const valueB = 2.00
 const taxes = 0.00
 
-export default function PaymentModal({children}){
+export default function PaymentModal({ submit, children }){
     
     const [visible, setVisible] = useState(false),
     [userInfo, setUserInfo] = useState({}),
@@ -53,40 +53,6 @@ export default function PaymentModal({children}){
             balance:  parseFloat(bill.total - event.target.value)
         })
         event.target.value = (event.target.value > bill.total || event.target.value == '') ? (0.00).toFixed(2) : event.target.value
-    },
-
-    handleSubmit = async (event) => {
-        event.preventDefault()
-
-        const date = new Date(),
-        form = new FormData(event.target),
-        data = {
-            ide: `${date.getMonth()}${date.getYear()}${form.get('cod')}`,
-            cid: form.get('cid'),
-            cod: form.get('cod'),
-            paid: []
-        }
-
-        try{
-            const response = await fetch('/api/payments', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            })
-
-            if(!response.ok){
-                throw new Error('Error en el servidor')
-            }
-            
-            const result = await response.json()
-            setVisible(false)
-            window.location.reload()
-
-        }catch(err){
-            console.error(err)
-            alert('Ocurrió un error')
-        }
-        
     }
 
     return <>
@@ -104,7 +70,7 @@ export default function PaymentModal({children}){
             <div className='modal-background'>
                 <div className='container'>
                     <div className='content'>
-                        <form className='form' onSubmit={handleSubmit}>
+                        <form className='form' onSubmit={submit}>
                             <input type='hidden' name='cod' value={userInfo.cod} />
                             <input type='hidden' name='cid' value={userInfo.cid} />
                             <fieldset>

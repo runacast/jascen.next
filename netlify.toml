@@ -2,6 +2,11 @@
   command = "npm run build"
   publish = ".next"
 
+[dev]
+  functions = "netlify/functions"
+  framework = "next"
+  offline = true
+
 [functions]
   directory = "netlify/functions"
 
