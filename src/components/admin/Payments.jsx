@@ -5,8 +5,8 @@ import Header from '@/components/admin/payments/Header'
 
 export default function Template(){
 
-    const [registers, setRegisters] = useState([])
-    const [message, setMessage] = useState('')
+    const [registers, setRegisters] = useState([]),
+    [visible, setVisible] = useState(false)
 
     useEffect(() => {
 
@@ -49,8 +49,8 @@ export default function Template(){
             
             const result = await response.json()
             setVisible(false)
-
-            setRegisters(registers.push(data))
+            registers.push(result.data) // push data got
+            setRegisters(registers)
 
         }catch(err){
             console.error(err)
@@ -60,7 +60,7 @@ export default function Template(){
     }
 
     return <>
-    <Header submit={ (event) => handleSubmit(event) } />
+    <Header submit={ (event) => handleSubmit(event) } setModal={ (state) => setVisible(state) } open={visible} />
     <div className='tb-panel'>
         <table className='table'>
             <thead>

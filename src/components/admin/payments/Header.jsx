@@ -8,10 +8,9 @@ const valueA = 1.00
 const valueB = 2.00
 const taxes = 0.00
 
-export default function PaymentModal({ submit, children }){
+export default function PaymentModal({ submit, setModal, open, children }){
     
-    const [visible, setVisible] = useState(false),
-    [userInfo, setUserInfo] = useState({}),
+    const [userInfo, setUserInfo] = useState({}),
     [charges, setCharges] = useState([]),
     [bill, setBill] = useState({remaining:0,taxes:0.00,total:0.00,balance:0.00}),
     months = getMonths(start_year, start_month),
@@ -41,7 +40,7 @@ export default function PaymentModal({ submit, children }){
             setCharges(list)
 
         }
-        setVisible(true)
+        setModal(true)
 
     },
 
@@ -66,7 +65,7 @@ export default function PaymentModal({ submit, children }){
                 <button type='submit' className="btn btn-form input-attach">Registrar pago</button>
             </fieldset>
         </form>
-        {visible && (
+        {open && (
             <div className='modal-background'>
                 <div className='container'>
                     <div className='content'>
@@ -127,7 +126,7 @@ export default function PaymentModal({ submit, children }){
                             </fieldset>
                             <fieldset className='field-group'>
                                 <button type='submit' className='btn btn-form'>Registrar pago</button>
-                                <button type='button' onClick={(event) => {setVisible(false)}} className='btn btn-form'>Cancelar</button>
+                                <button type='button' onClick={(event) => {setModal(false)}} className='btn btn-form'>Cancelar</button>
                             </fieldset>
                         </form>
                     </div>
