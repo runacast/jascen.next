@@ -14,7 +14,7 @@ const handler = async (event) => {
       names: form.get('nombres'),
       cid: parseInt(form.get('cedula'), 10),
       alias: form.get('apodo'),
-      phone: parseInt(form.get('telefono'), 10),
+      phone: form.get('telefono'),
       email: form.get('correo')
     }
 
@@ -53,10 +53,10 @@ const handler = async (event) => {
 
       const total = await User.countDocuments()
       
-      data.cod = total + 1
+      data.cod = parseInt((total + 1), 10)
       const user = new User(data)
 
-      if (isNaN(data.cid) || isNaN(data.phone)) {
+      if (isNaN(data.cod) || isNaN(data.cid)) {
         const err = new Error("Invalid numeric fields")
         err.status = 400
         throw err
@@ -77,13 +77,13 @@ const handler = async (event) => {
 
     if (method == 'PUT') { /** Update data to collection on DB */
 
-      if (isNaN(data.cod) || isNaN(data.cid) || isNaN(data.phone)) {
+      if (isNaN(data.cod) || isNaN(data.cid)) {
         const err = new Error("Invalid numeric fields")
         err.status = 400
         throw err
       }
 
-      await User.updateOne({ _id: body.id /* Verifica si esto requiere convertirlo en un ObjectId*/ }, data)
+      await User.updateOne({ _id: form.get('id') }, data)
 
       return {
         statusCode: 200,
@@ -96,9 +96,9 @@ const handler = async (event) => {
 
     }
     
-    if (method == 'DELETE') {
+    if (method == 'DELETE') { /** Delete element by ID */
       
-      await User.deleteOne({ _id: body.id })
+      await User.deleteOne({ _id: form.get('id') })
 
       return {
         statusCode: 200,
