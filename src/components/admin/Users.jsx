@@ -44,7 +44,6 @@ export default function Template() {
             
             const response = await fetch('/api/users', {
                 method: methodType,
-                headers: { 'Content-Type': 'application/json' },
                 body: form
             })
 

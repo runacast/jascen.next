@@ -11,18 +11,18 @@ export default async function adminBills() {
     })
 
     if(!res.ok){
-      alert('error')
+      alert(res)
       return
     }
 
-    console.log(res.json())
+    console.log(await res.json())
   }
 
   return (
     <main>
       <h1>Nuevo usuario</h1>
       <form onSubmit={submit}>
-      <input name="name" value={'Hello!'}></input>
+      <input name="title"></input>
       <button type="submit">TEst</button>
       </form>
     </main>
