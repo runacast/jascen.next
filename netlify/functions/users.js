@@ -7,11 +7,9 @@ export default async (req, context) => {
 
     const {test} = await req.json()
     
-    await connectDB()
-    
-    return new Response(JSON.stringify({"message":`any: ${test}`}))
+    return new Response(JSON.stringify({"message":`any`}))
 
   } catch(e) {
-
+    return new Response("error")
   }
 }
