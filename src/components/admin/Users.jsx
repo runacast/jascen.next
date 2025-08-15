@@ -36,17 +36,16 @@ export default function Template() {
         event.preventDefault()
 
         const form = new FormData(event.target),
-        methodType = userData._id ? 'PUT' : 'POST', /** POST add and PUT modify */
-        data = Object.fromEntries(form.entries())
+        methodType = userData._id ? 'PUT' : 'POST' /** POST add and PUT modify */
 
         try{
 
-            if(userData._id) data.id = userData._id
+            if(userData._id) form.set('id', userData._id)
             
             const response = await fetch('/api/users', {
                 method: methodType,
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
+                body: form
             })
 
             if(!response.ok){
@@ -77,11 +76,13 @@ export default function Template() {
         }
         
         try {
-            
+
+            const form = new FormData()
+            form.set('id', userData._id)
             const response = await fetch('/api/users', {
                 method: 'DELETE',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id : userData._id })
+                body: form
             })
 
             if(!response.ok){

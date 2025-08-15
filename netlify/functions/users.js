@@ -5,10 +5,10 @@ const handler = async (event) => {
 
   try {
 
-    await connectDB()
-    const method = event.httpMethod
+    await connectDB() // Wait a connection to database
+    const method = event.httpMethod // Method got from request
 
-    if (method == 'GET') { /** Get datalist from db */
+    if (method == 'GET') { // Get datalist from db
 
       const params = new URLSearchParams(event.rawUrl.split('?')[1]),
         filter = {},
@@ -22,7 +22,7 @@ const handler = async (event) => {
         filter[key] = value
       }
 
-      const users = await User.find(filter).skip(skip).limit(limit),
+      const users = await User.find(filter).skip(skip).limit(limit), // Query collection
       result = users.map(user => ({
         ...user.toObject(),
         _id: user._id.toString()
@@ -39,7 +39,7 @@ const handler = async (event) => {
 
     }
 
-    const form = await req.formData(),
+    const form = await req.formData(), // Request FormData
       data = { /** Format user data */
         cod: parseInt(form.get('codigo'), 10),
         surnames: form.get('apellidos'),
