@@ -36,7 +36,7 @@ export default function Template() {
         event.preventDefault()
 
         const form = new FormData(event.target),
-        methodType = form.get('id') ? 'PUT' : 'POST', /** POST add and PUT modify */
+        methodType = userData._id ? 'PUT' : 'POST', /** POST add and PUT modify */
         user = { /** Format user data */
             cod: form.get('codigo'),
             surnames: form.get('apellidos'),
@@ -50,6 +50,8 @@ export default function Template() {
         if(userData._id) user.id = userData._id
 
         try{
+
+            console.log(methodType)
             
             const response = await fetch('/api/users', {
                 method: methodType,
@@ -62,8 +64,9 @@ export default function Template() {
             }
             
             const result = await response.json() /** Fetch get response */
+            console.log(result)
             setVisible(false)
-            if(form.get('id')){ /** Modfied element on Array */
+            if(userData._id){ /** Modfied element on Array */
                 users[key] = user
             }else{ /** Add new element data to Array */
                 users.push(result.data)

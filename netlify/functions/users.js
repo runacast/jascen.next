@@ -44,7 +44,7 @@ const handler = async (event) => {
       const total = await User.countDocuments()
       const data = JSON.parse(event.body)
       
-      data.cod = total + 1 
+      data.cod = total + 1
       const user = new User(data)
 
       await user.save()
@@ -62,9 +62,10 @@ const handler = async (event) => {
 
     if (method == 'PUT') { /** Update data to collection on DB */
 
-      const data = JSON.parse(event.body)
+      const data = JSON.parse(event.body), id = data.id
+      delete data.id
 
-      await User.updateOne({ _id: data.id }, data)
+      await User.updateOne({ _id: id }, data)
 
       return {
         statusCode: 200,
