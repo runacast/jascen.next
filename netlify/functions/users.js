@@ -6,8 +6,6 @@ export default async (req, context) => {
   try{
     
     const form = await req.formData()
-
-    form.set('name', "fruit")
     
     return new Response(JSON.stringify({"message":`any ${form.get('name')}`}))
 
