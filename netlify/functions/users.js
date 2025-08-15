@@ -8,7 +8,7 @@ const handler = async (event) => {
     await connectDB()
     const method = event.httpMethod
 
-    if (method == 'GET') {
+    if (method == 'GET') { /** Get datalist from db */
 
       const params = new URLSearchParams(event.rawUrl.split('?')[1]),
       filter = {},
@@ -39,7 +39,7 @@ const handler = async (event) => {
 
     }
 
-    if (method == 'POST') {
+    if (method == 'POST') { /** Post new data to DB */
 
       const total = await User.countDocuments()
       const data = JSON.parse(event.body)
@@ -62,12 +62,12 @@ const handler = async (event) => {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*'
         },
-        body: JSON.stringify({ message: 'User inserted' })
+        body: JSON.stringify({ message: 'User inserted', data: user.toObject() })
       }
 
     }
 
-    if (method == 'PUT') {
+    if (method == 'PUT') { /** Update data to collection on DB */
 
       const data = JSON.parse(event.body)
 
@@ -87,7 +87,7 @@ const handler = async (event) => {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*'
         },
-        body: JSON.stringify({ message: 'User modified' })
+        body: JSON.stringify({ message: 'User modified', data })
       }
 
     }
