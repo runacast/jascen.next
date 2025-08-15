@@ -87,7 +87,7 @@ const handler = async (event) => {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*'
         },
-        body: JSON.stringify({ message: 'User modified!', data: data })
+        body: JSON.stringify({ message: 'User modified!', data })
       }
 
     }
