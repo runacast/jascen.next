@@ -6,7 +6,7 @@
 import { useEffect, useState } from 'react'
 import Modal from '@/components/admin/users/Modal'
 
-export default function Render() {
+export default function Render({ headerData }) {
 
     const [users, setUsers] = useState([]),
     [key, setKey] = useState(null), /** Set key list */
@@ -109,6 +109,8 @@ export default function Render() {
         setUserData(data) /** Setting user data on form */
         setVisible(true)
     }
+
+    console.log(headerData)
 
     return <div className='v-overflow'>
         <div className='row'>
