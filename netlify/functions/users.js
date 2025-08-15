@@ -3,19 +3,19 @@ import User from '../../src/models/User.js'
 
 const handler = async (event) => {
 
-  try{
+  try {
 
     await connectDB()
     const method = event.httpMethod,
-    body = JSON.parse(event.body),
+    form = await req.formData(),
     data = { /** Format user data */
-      cod: parseInt(body.codigo),
-      surnames: body.apellidos,
-      names: body.nombres,
-      cid: parseInt(body.cedula),
-      alias: body.apodo,
-      phone: parseInt(body.telefono),
-      email: body.correo
+      cod: parseInt(form.get('codigo'), 10),
+      surnames: form.get('apellidos'),
+      names: form.get('nombres'),
+      cid: parseInt(form.get('cedula'), 10),
+      alias: form.get('apodo'),
+      phone: parseInt(form.get('telefono'), 10),
+      email: form.get('correo')
     }
 
     if (method == 'GET') { /** Get datalist from db */
@@ -24,8 +24,8 @@ const handler = async (event) => {
       filter = {},
       key = params.get('key') || '_id',
       value = params.get('value') || null,
-      page = parseInt(params.get('page')) || 1,
-      limit = parseInt(params.get('limit')) || 0,
+      page = parseInt(params.get('page'), 10) || 1,
+      limit = parseInt(params.get('limit'), 10) || 0,
       skip = (page - 1) * limit
 
       if(value){
@@ -56,6 +56,12 @@ const handler = async (event) => {
       data.cod = total + 1
       const user = new User(data)
 
+      if (isNaN(data.cid) || isNaN(data.phone)) {
+        const err = new Error("Invalid numeric fields")
+        err.status = 400
+        throw err
+      }
+
       await user.save()
 
       return {
@@ -70,6 +76,12 @@ const handler = async (event) => {
     }
 
     if (method == 'PUT') { /** Update data to collection on DB */
+
+      if (isNaN(data.cod) || isNaN(data.cid) || isNaN(data.phone)) {
+        const err = new Error("Invalid numeric fields")
+        err.status = 400
+        throw err
+      }
 
       await User.updateOne({ _id: body.id /* Verifica si esto requiere convertirlo en un ObjectId*/ }, data)
 
@@ -98,10 +110,10 @@ const handler = async (event) => {
       }
     }
 
-  }catch(e){
+  } catch(e) {
     return {
-      statusCode: 500,
-      body: JSON.stringify({ error: 'Server error, request not defined.' })
+      statusCode: e.status || 500,
+      body: JSON.stringify({ error: e.message })
     }
   }
 
