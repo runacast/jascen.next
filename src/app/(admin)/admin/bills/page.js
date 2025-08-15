@@ -1,4 +1,4 @@
-export default function adminBills() {
+export default async function adminBills() {
   return (
     <main>
       <h1>Nuevo usuario</h1>
