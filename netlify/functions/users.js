@@ -6,29 +6,19 @@ const handler = async (event) => {
   try {
 
     await connectDB()
-    const method = event.httpMethod,
-    form = await req.formData(),
-    data = { /** Format user data */
-      cod: parseInt(form.get('codigo'), 10),
-      surnames: form.get('apellidos'),
-      names: form.get('nombres'),
-      cid: parseInt(form.get('cedula'), 10),
-      alias: form.get('apodo'),
-      phone: form.get('telefono'),
-      email: form.get('correo')
-    }
+    const method = event.httpMethod
 
     if (method == 'GET') { /** Get datalist from db */
 
       const params = new URLSearchParams(event.rawUrl.split('?')[1]),
-      filter = {},
-      key = params.get('key') || '_id',
-      value = params.get('value') || null,
-      page = parseInt(params.get('page'), 10) || 1,
-      limit = parseInt(params.get('limit'), 10) || 0,
-      skip = (page - 1) * limit
+        filter = {},
+        key = params.get('key') || '_id',
+        value = params.get('value') || null,
+        page = parseInt(params.get('page'), 10) || 1,
+        limit = parseInt(params.get('limit'), 10) || 0,
+        skip = (page - 1) * limit
 
-      if(value){
+      if (value) {
         filter[key] = value
       }
 
@@ -48,6 +38,17 @@ const handler = async (event) => {
       }
 
     }
+
+    const form = await req.formData(),
+      data = { /** Format user data */
+        cod: parseInt(form.get('codigo'), 10),
+        surnames: form.get('apellidos'),
+        names: form.get('nombres'),
+        cid: parseInt(form.get('cedula'), 10),
+        alias: form.get('apodo'),
+        phone: form.get('telefono'),
+        email: form.get('correo')
+      }
 
     if (method == 'POST') { /** Post new data to DB */
 
