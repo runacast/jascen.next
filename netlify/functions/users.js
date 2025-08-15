@@ -5,7 +5,7 @@ export default async (req, context) => {
   
   try{
 
-    const {test} = await req.json()
+    console.log(req)
     
     return new Response(JSON.stringify({"message":`any`}))
 
