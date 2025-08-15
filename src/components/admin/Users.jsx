@@ -36,24 +36,25 @@ export default function Template() {
         event.preventDefault()
 
         const form = new FormData(event.target),
-        data = Object.fromEntries(form.entries()),
         methodType = form.get('id') ? 'PUT' : 'POST', /** POST add and PUT modify */
         user = { /** Format user data */
-            _id: users[key]._id,
             cod: form.get('codigo'),
             surnames: form.get('apellidos'),
             names: form.get('nombres'),
-            alias: form.get('apodo'),
             cid: form.get('cedula'),
-            active: users[key].active
+            alias: form.get('apodo'),
+            phone: form.get('telefono'),
+            email: form.get('correo')
         }
+
+        if(userData._id) user.id = userData._id
 
         try{
             
             const response = await fetch('/api/users', {
                 method: methodType,
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
+                body: JSON.stringify(user)
             })
 
             if(!response.ok){
@@ -61,17 +62,14 @@ export default function Template() {
             }
             
             const result = await response.json() /** Fetch get response */
-            console.log(methodType)
             setVisible(false)
-            if(methodType == 'PUT'){ /** Modfied element on Array */
-                //users[key] = user
-            }else
-                if(methodType == 'POST'){ /** Add new element data to Array */
-                    console.log(result)
-                    //users.push(result.data)
-                }
+            if(form.get('id')){ /** Modfied element on Array */
+                users[key] = user
+            }else{ /** Add new element data to Array */
+                users.push(result.data)
+            }
             
-            //setUsers(users) /** Change users list */
+            setUsers(users) /** Change users list */
 
         }catch(err){
             alert('Ocurrió un error.')
@@ -129,8 +127,7 @@ export default function Template() {
             </div>
             <div className='col-2'>
                 <button type='button' onClick={() => {
-                    setUserData({})
-                    setVisible(true)
+                    setModal(null,{})
                 }} className='right btn-panel'>Añadir usuario</button>
             </div>
         </div>

@@ -44,15 +44,8 @@ const handler = async (event) => {
       const total = await User.countDocuments()
       const data = JSON.parse(event.body)
       
-      const user = new User({
-        cod: total + 1,
-        surnames: data.apellidos,
-        names: data.nombres,
-        cid: data.cedula,
-        alias: data.apodo,
-        phone: data.telefono,
-        email: data.correo
-      })
+      data.cod = total + 1 
+      const user = new User(data)
 
       await user.save()
 
@@ -71,15 +64,7 @@ const handler = async (event) => {
 
       const data = JSON.parse(event.body)
 
-      await User.updateOne({ _id: data.id }, {
-        cod: data.codigo,
-        surnames: data.apellidos,
-        names: data.nombres,
-        cid: data.cedula,
-        alias: data.apodo,
-        phone: data.telefono,
-        email: data.correo
-      })
+      await User.updateOne({ _id: data.id }, data)
 
       return {
         statusCode: 200,
@@ -87,7 +72,7 @@ const handler = async (event) => {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*'
         },
-        body: JSON.stringify({ message: 'User modified!', data: data })
+        body: JSON.stringify({ message: 'User modified!' })
       }
 
     }

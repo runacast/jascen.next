@@ -6,7 +6,6 @@ export default function Modal({ data, setModal, submit, _delete }){
             <div className='content'>
                 <form className='form' onSubmit={submit}>
                     <legend>{data._id ? 'Editar datos de usuario' : 'Ingresa los datos del usuario'}</legend>
-                    {data._id && <input type='hidden' name='id' value={data._id} />}
                     {data._id && (<fieldset className='field-group row'>
                         <div className='col-6 form-area'>
                             <label className='sec-3'>Código</label><input className='sec-2' type='number' name='codigo' defaultValue={data.cod || ''} />
