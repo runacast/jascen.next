@@ -61,6 +61,7 @@ export default function Render() {
             }
             
             const result = await response.json() /** Fetch get response */
+            console.log(result)
             setVisible(false)
             if(methodType == 'PUT'){ /** Modfied element on Array */
                 users[key] = user
