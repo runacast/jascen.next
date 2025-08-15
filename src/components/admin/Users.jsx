@@ -36,27 +36,16 @@ export default function Template() {
         event.preventDefault()
 
         const form = new FormData(event.target),
-        methodType = userData._id ? 'PUT' : 'POST', /** POST add and PUT modify */
-        user = { /** Format user data */
-            cod: form.get('codigo'),
-            surnames: form.get('apellidos'),
-            names: form.get('nombres'),
-            cid: form.get('cedula'),
-            alias: form.get('apodo'),
-            phone: form.get('telefono'),
-            email: form.get('correo')
-        }
+        methodType = userData._id ? 'PUT' : 'POST' /** POST add and PUT modify */
 
-        if(userData._id) user.id = userData._id
+        if(userData._id) form.set("id", userData._id)
 
         try{
-
-            console.log(methodType)
             
             const response = await fetch('/api/users', {
                 method: methodType,
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(user)
+                body: form
             })
 
             if(!response.ok){

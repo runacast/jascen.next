@@ -6,7 +6,17 @@ const handler = async (event) => {
   try{
 
     await connectDB()
-    const method = event.httpMethod
+    const method = event.httpMethod,
+    body = JSON.parse(event.body),
+    data = { /** Format user data */
+      cod: parseInt(body.codigo),
+      surnames: body.apellidos,
+      names: body.nombres,
+      cid: parseInt(body.cedula),
+      alias: body.apodo,
+      phone: parseInt(body.telefono),
+      email: body.correo
+    }
 
     if (method == 'GET') { /** Get datalist from db */
 
@@ -42,7 +52,6 @@ const handler = async (event) => {
     if (method == 'POST') { /** Post new data to DB */
 
       const total = await User.countDocuments()
-      const data = JSON.parse(event.body)
       
       data.cod = total + 1
       const user = new User(data)
@@ -62,10 +71,7 @@ const handler = async (event) => {
 
     if (method == 'PUT') { /** Update data to collection on DB */
 
-      const data = JSON.parse(event.body), id = data.id
-      delete data.id
-
-      await User.updateOne({ _id: id }, data)
+      await User.updateOne({ _id: body.id /* Verifica si esto requiere convertirlo en un ObjectId*/ }, data)
 
       return {
         statusCode: 200,
@@ -79,10 +85,8 @@ const handler = async (event) => {
     }
     
     if (method == 'DELETE') {
-
-      const data = JSON.parse(event.body)
       
-      await User.deleteOne({ _id: data.id })
+      await User.deleteOne({ _id: body.id })
 
       return {
         statusCode: 200,
