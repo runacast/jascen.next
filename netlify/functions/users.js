@@ -2,5 +2,8 @@ import { connectDB } from '../../src/lib/db.js'
 import User from '../../src/models/User.js'
 
 export default async (req, context) => {
-  return new Response("Hello, world!");
+  const {key} = context.params
+  return new Response({
+    "title":key
+  })
 }
