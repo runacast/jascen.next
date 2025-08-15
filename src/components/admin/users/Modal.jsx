@@ -29,7 +29,7 @@ export default function Modal({ data, setModal, submit, _delete }){
                     </fieldset>
                     <fieldset className='field-group row'>
                         <div className='col-6 form-area'>
-                            <label className='sec-3'>Teléfono</label><input className='sec-6' type='number' name='telefono' defaultValue={data.phone || ''} />
+                            <label className='sec-3'>Teléfono</label><input className='sec-6' type='text' name='telefono' defaultValue={data.phone || ''} />
                         </div>
                         <div className='col-6 form-area'>
                             <label className='sec-3'>Correo electrónico</label><input className='sec-7' type='text' name='correo' defaultValue={data.email || ''} />

@@ -57,7 +57,7 @@ export default function Template() {
             console.log(result)
             setVisible(false)
             if(userData._id){ /** Modfied element on Array */
-                users[key] = user
+                users[key] = result.data
             }else{ /** Add new element data to Array */
                 users.push(result.data)
             }
@@ -65,7 +65,7 @@ export default function Template() {
             setUsers(users) /** Change users list */
 
         }catch(err){
-            alert('Ocurrió un error.')
+            alert(err.message)
         }
 
     },
