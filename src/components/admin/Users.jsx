@@ -61,16 +61,17 @@ export default function Template() {
             }
             
             const result = await response.json() /** Fetch get response */
-            
+            console.log(methodType)
             setVisible(false)
             if(methodType == 'PUT'){ /** Modfied element on Array */
-                users[key] = user
+                //users[key] = user
             }else
                 if(methodType == 'POST'){ /** Add new element data to Array */
-                    users.push(result.data)
+                    console.log(result)
+                    //users.push(result.data)
                 }
             
-            setUsers(users) /** Change users list */
+            //setUsers(users) /** Change users list */
 
         }catch(err){
             alert('Ocurrió un error.')
