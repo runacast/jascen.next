@@ -13,6 +13,7 @@ export default async (req, context) => {
         filter = {},
         key = params.get('key') || '_id',
         value = params.get('value') || null,
+        query = params.get('query') || null,
         page = parseInt(params.get('page'), 10) || 1,
         limit = parseInt(params.get('limit'), 10) || 0,
         skip = (page - 1) * limit
@@ -21,7 +22,32 @@ export default async (req, context) => {
         filter[key] = value
       }
 
+      const users = await User.find({
+          $or: [{
+            names: {
+              $regex: q,
+              $options: 'i'
+            }
+          }, {
+            surnames: {
+              $regex: q,
+              $options: 'i'
+            }
+          }, {
+            alias: {
+              $regex: q,
+              $options: 'i'
+            }
+          }, {
+            code: {
+              $regex: q,
+              $options: 'i'
+            }
+          }, ],
+        })
+
       const users = await User.find(filter).skip(skip).limit(limit), // Query collection
+
       result = users.map(user => ({
         ...user.toObject(),
         _id: user._id.toString()
@@ -87,7 +113,9 @@ export default async (req, context) => {
         throw err
       }
 
+      data.active = Number(form.get('estado')) // Formatting active to boolean
       await User.updateOne({ _id: form.get('id') }, data)
+      data._id = form.get('id') // Set id to data response
 
       return new Response(
         JSON.stringify({ message: 'User modified!', data }),

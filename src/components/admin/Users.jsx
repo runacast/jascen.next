@@ -48,13 +48,15 @@ export default function Template() {
             })
 
             if(!response.ok){
+                console.log(response)
                 throw new Error('Error en el servidor')
             }
             
             const result = await response.json() /** Fetch get response */
-            console.log(result)
+            
             setVisible(false)
             if(userData._id){ /** Modfied element on Array */
+                console.log(result.data)
                 users[key] = result.data
             }else{ /** Add new element data to Array */
                 users.push(result.data)
@@ -80,7 +82,6 @@ export default function Template() {
             form.set('id', userData._id)
             const response = await fetch('/api/users', {
                 method: 'DELETE',
-                headers: { 'Content-Type': 'application/json' },
                 body: form
             })
 
@@ -102,7 +103,7 @@ export default function Template() {
         setVisible(true)
     }
 
-    return <div className='v-overflow'>
+    return <>
         <div className='row'>
             <div className='col-10'>
                 <form className='form'>
@@ -120,33 +121,35 @@ export default function Template() {
             </div>
             <div className='col-2'>
                 <button type='button' onClick={() => {
-                    setModal(null,{})
+                    setModal(null, {})
                 }} className='right btn-panel'>Añadir usuario</button>
             </div>
         </div>
-        <hr/>
-        <table className='table'>
-            <thead>
-                <tr>
-                    <th>N°</th>
-                    <th>Apellidos y nombres</th>
-                    <th>Apodo</th>
-                    <th>Cédula</th>
-                    <th>Estado</th>
-                </tr>
-            </thead>
-            <tbody>
-                {loading ? <tr><td colSpan={6}>Cargando usuarios...</td></tr> : users.map((user, index) => (
-                    <tr key={index}>
-                        <td>{user.cod}</td>
-                        <td><a href='#' onClick={() => setModal(index,user)}>{`${user.surnames} ${user.names}`}</a></td>
-                        <td>{user.alias}</td>
-                        <td>{user.cid}</td>
-                        <td>{user.active ? "activo" : "inactivo"}</td>
+        <hr />
+        <div className='v-overflow'>
+            <table className='table'>
+                <thead>
+                    <tr>
+                        <th>N°</th>
+                        <th>Apellidos y nombres</th>
+                        <th>Apodo</th>
+                        <th>Cédula</th>
+                        <th>Estado</th>
                     </tr>
-                ))}
-            </tbody>
-        </table>
-        {visible && <Modal data={userData} setModal={(val) => setVisible(val)} submit={handleSubmit} _delete={handleDelete} /> }
-    </div>
+                </thead>
+                <tbody>
+                    {loading ? <tr><td colSpan={6}>Cargando usuarios...</td></tr> : users.map((user, index) => (
+                        <tr key={index}>
+                            <td>{user.cod}</td>
+                            <td><a href='#' onClick={() => setModal(index, user)}>{`${user.surnames} ${user.names}`}</a></td>
+                            <td>{user.alias}</td>
+                            <td>{user.cid}</td>
+                            <td>{user.active ? "activo" : "inactivo"}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+            {visible && <Modal data={userData} setModal={(val) => setVisible(val)} submit={handleSubmit} _delete={handleDelete} />}
+        </div>
+    </>
 }

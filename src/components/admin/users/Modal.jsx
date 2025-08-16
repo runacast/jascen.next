@@ -1,6 +1,11 @@
 'use client'
 
+import { useState } from 'react'
+
 export default function Modal({ data, setModal, submit, _delete }){
+
+    const [activo, setActivo] = useState(Number(data.active) ? '1' : '0')
+
     return <div className='modal-background'>
         <div className='container'>
             <div className='content'>
@@ -10,6 +15,15 @@ export default function Modal({ data, setModal, submit, _delete }){
                         <div className='col-6 form-area'>
                             <label className='sec-3'>Código</label><input className='sec-2' type='number' name='codigo' defaultValue={data.cod || ''} />
                         </div>
+                        {data._id && (
+                            <div className='col-6 form-area'>
+                            <label>Actividad</label>
+                            <div className=''>
+                                <label>Activo <input type='radio' checked={activo === '1'} onChange={() => setActivo('1')} name='estado' value={'1'}/></label>
+                                <label>Inactivo <input type='radio' checked={activo === '0'} onChange={() => setActivo('0')} name='estado' value={'0'}/></label>
+                            </div>
+                        </div>
+                        )}
                     </fieldset>)}
                     <fieldset className='field-group row'>
                         <div className='col-6 form-area'>
