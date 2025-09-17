@@ -13,16 +13,18 @@ export default function Modal({ data, setModal, submit, _delete }){
             const response = await fetch(`/api/properties?userId=${data._id}&options=title,address`,{method: 'GET'})
             
             if(!response.ok){
-                alert('Error, 404')
+                alert('Error 404')
             }
 
             const property = await response.json()
 
-            setRows([property])
+            if(property) setRows([property])
 
         })()
 
     },[])
+
+    console.log(rows)
     
     const [activo, setActivo] = useState(Number(data.active) ? '1' : '0'),
     /** Add table row */

@@ -1,6 +1,6 @@
 import { connectDB } from '../../src/lib/db.js'
 import Property from '../../src/models/Property.js'
-import he from 'he'
+import he from 'he' /** He escaping HTML and javascript coding */
 
 export default async (req, context) => {
 
@@ -12,15 +12,15 @@ export default async (req, context) => {
         
         if(req.method == 'GET'){
 
-            let result, filter = [],
+            let property, filter = [],
             id = params.get('id'),
             user_id = params.get('userId'),
             options = params.get('options')
 
             if (id) {
-                result = Property.findById(id).select(options.replace(',',' '))
+                property = Property.findById(id)
             }else if (user_id) {
-                result = Property.findOne({user_id}).select(options.replace(',',' '))
+                property = Property.findOne({user_id})
             }else{
                 
                 filter.push({
@@ -33,11 +33,17 @@ export default async (req, context) => {
                     }
                 })
 
-                result = Property.aggregate(filter)
+                property = Property.aggregate(filter)
             }
 
+            if (options) {
+                property.select(options.replace(',',' '))
+            }
+
+            const result = await property
+
             return new Response(
-                JSON.stringify(await result),
+                JSON.stringify(result),
                 {
                     status: 200,
                     headers: {
@@ -107,7 +113,15 @@ export default async (req, context) => {
         }
 
     }catch(e){
-
+        return new Response(
+            JSON.stringify({ error: e.message }),
+            {
+                status: e.status || 500,
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }
+        )
     }
 
 }
