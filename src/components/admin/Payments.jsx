@@ -1,12 +1,18 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import Header from '@/components/admin/payments/Header'
+import { useEffect, useState, useRef } from 'react'
+import { useSearchParams } from 'next/navigation'
+import Modal from '@/components/admin/payments/Modal'
+import {Months, start_year, start_month} from '@/lib/payments'
 
 export default function Template(){
 
-    const [registers, setRegisters] = useState([]),
-    [visible, setVisible] = useState(false)
+    const searchForm = useRef(null),
+    searchParams = useSearchParams(),
+    [payments, setPayments] = useState([]),
+    [visible, setVisible] = useState(false),
+    [note, setNote] = useState({}),
+    cid = searchParams.get('cid')
 
     useEffect(() => {
 
@@ -17,67 +23,81 @@ export default function Template(){
                     return res.json()
                 }
             }).then((res) => {
-                setRegisters(res)
+                
             })
+
+            if(cid){
+                const xform = searchForm.current
+                xform['value'].value = cid
+                console.log(cid)
+            }
+
         } catch (err){
             alert('Error:'+err.message)
         }
 
     }, [])
 
-    const handleSubmit = async (event) => {
-        event.preventDefault()
-        const date = new Date(),
-        form = new FormData(event.target),
-        data = {
-            ide: `${date.getMonth()}${date.getYear()}${form.get('cod')}`,
-            cid: form.get('cid'),
-            cod: form.get('cod'),
-            paid: []
-        }
+    const handleSearchSubmit = async (event) => {
 
-        try{
-            const response = await fetch('/api/payments', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            })
+        try {
+            
+            const form = new FormData(searchForm.current),
+                response = await fetch(`/api/users?${form.get('field')}=${form.get('value')}`, { method: 'GET' })
 
             if(!response.ok){
-                throw new Error('Error en el servidor')
+                throw  new Error(response.error)
             }
-            
-            const result = await response.json()
-            setVisible(false)
-            registers.push(result.data) // push data got
-            setRegisters(registers)
 
-        }catch(err){
-            console.error(err)
-            alert('Ocurrió un error')
+            const user = await response.json()
+            
+            if(!user[0]){
+                throw  new Error('User not found.')
+            }
+
+            const note = user[0]
+
+            console.log(note.properties.length)
+
+            note.pendings = Months()
+            setNote(note)
+            setVisible(true)
+
+        } catch (e) {
+            alert(e.message)
         }
-        
+
     }
 
     return <>
-    <Header submit={ (event) => handleSubmit(event) } setModal={ (state) => setVisible(state) } open={visible} />
-    <div className='tb-panel'>
-        <table className='table'>
-            <thead>
-                <tr>
-                    <th>Clave de registro</th>
-                    <th>Fecha de pago</th>
-                </tr>
-            </thead>
-            <tbody>
-                {registers.map((order, index) => (
-                    <tr key={index}>
-                        <td>{order.ide}</td>
-                        <td>{(new Date(order.date)).toDateString()}</td>
+        <form ref={searchForm} className='form'>
+            <fieldset className='field-group'>
+                <input className='input-attach' type='number' required placeholder='Ingresa el identificador' name='value' />
+                <select className='input-attach' name='field'>
+                    <option value='identificacion'>Cédula / RUC</option>
+                    <option value='codigo'>Código</option>
+                </select>
+                <button type='button' className="btn btn-form input-attach" onClick={handleSearchSubmit}>Buscar usuario</button>
+            </fieldset>
+        </form>
+        <div className='tb-panel'>
+            <table className='table'>
+                <thead>
+                    <tr>
+                        <th>Clave de registro</th>
+                        <th>Fecha de pago</th>
                     </tr>
-                ))}
-            </tbody>
-        </table>
-    </div>
+                </thead>
+                <tbody>
+                    {payments.map((order, index) => (
+                        <tr key={index}>
+                            <td>{order.ide}</td>
+                            <td>{(new Date(order.date)).toDateString()}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
+        {visible && <Modal data={note} setState={(value) => setVisible(value)} />}
     </>
 }

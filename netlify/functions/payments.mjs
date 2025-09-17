@@ -9,13 +9,14 @@ const handler = async (event) => {
     const method = event.httpMethod
 
     if (method == 'GET') {
-
+      
+      let _start, _limit
       const params = new URLSearchParams(event.rawUrl.split('?')[1]),
         filter = {},
         key = params.get('key') || '_id',
         value = params.get('value') || null,
-        start = params.get('page') || 1,
-        limit = params.get('limit') || 0,
+        start = _start = parseInt(params.get('page'), 10) ? _start : 1,
+        limit = _limit = parseInt(params.get('limit'), 10) ? _limit : 0,
         skip = (start - 1) * limit
 
       if (value) filter[key] = value
