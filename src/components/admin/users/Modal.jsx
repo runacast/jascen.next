@@ -6,11 +6,11 @@ export default function Modal({ data, setModal, submit, _delete }){
 
     const [rows, setRows] = useState([])
     
-    useEffect(() => {
+    useEffect(() => { /** Load default data */
         
-        (async () => {
+        if(data._id) (async () => { /** Check if _id exists */ 
 
-            const response = await fetch(`/api/properties?userId=${data.id}&options=title,address`,{method: 'GET'})
+            const response = await fetch(`/api/properties?userId=${data._id}&options=title,address`,{method: 'GET'})
             
             if(!response.ok){
                 alert('Error, 404')
@@ -25,9 +25,11 @@ export default function Modal({ data, setModal, submit, _delete }){
     },[])
     
     const [activo, setActivo] = useState(Number(data.active) ? '1' : '0'),
+    /** Add table row */
     addRow = (event) => {
         setRows(rows.concat({title:`Casa ${rows.length + 1}`,address:"Centro"}))
     },
+    /** Remove table row */
     delRow = (index) => {
         setRows(rows.filter((item, i) => i !== index))
     }

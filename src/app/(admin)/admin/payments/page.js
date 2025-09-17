@@ -1,6 +1,6 @@
 import Payments from '@/components/admin/Payments'
 
-export default async function Calendar(){
+export default async () => {
 
     const date = new Date()
 

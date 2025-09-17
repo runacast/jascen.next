@@ -17,15 +17,7 @@ export default function Template(){
     useEffect(() => {
 
         try {
-            fetch('/api/payments?page=1&limit=10',{method:'GET'})
-            .then((res) => {
-                if(res.ok){
-                    return res.json()
-                }
-            }).then((res) => {
-                
-            })
-
+            
             if(cid){
                 const xform = searchForm.current
                 xform['value'].value = cid
