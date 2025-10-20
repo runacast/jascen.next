@@ -7,15 +7,13 @@ import { useEffect, useState, useRef } from 'react'
 import Modal from '@/components/admin/users/Modal'
 import Link from 'next/link'
 
-export default function Template() {
+export default () => {
 
     const formRef = useRef(null), 
     [users, setUsers] = useState([]),
-    [key, setKey] = useState(null), /** Set key list */
-    [userData, setUserData] = useState({}), /** set data to user */
+    [user_id, setUserId] = useState(NaN), /** set data to user */
     [loading, setLoading] = useState(true), /** Set display loading animation */
-    [visible, setVisible] = useState(false), /** Set modal visibility display */
-    [visiblePay, setVisiblePay] = useState(false)
+    [visible, setVisible] = useState(false) /** Set modal visibility display */
 
     useEffect(() => { /** Get users list */
 
@@ -24,13 +22,13 @@ export default function Template() {
             try {
 
                 const response = await fetch('/api/users', {method:'GET'}),
-                data = await response.json()
+                result = await response.json()
 
-                if(data.error){
-                    throw new Error(data.error)
+                if(result.error){
+                    throw new Error(result.error)
                 }
                 
-                setUsers(data)
+                setUsers(result)
 
             } catch (e) {
                 alert(e.message)
@@ -43,81 +41,7 @@ export default function Template() {
         fetchUsers()
     }, [])
 
-    const handleSubmit = async (event) => { /* Submit data add or modify from modal form */
-
-        event.preventDefault()
-
-        const form = new FormData(event.target),
-        methodType = userData._id ? 'PUT' : 'POST' /** POST add and PUT modify */
-
-        try{
-
-            if(userData._id) form.set('id', userData._id)
-            
-            const response = await fetch('/api/users', {
-                method: methodType,
-                body: form
-            })
-
-            if(!response.ok){
-                throw new Error(response.error)
-            }
-            
-            const result = await response.json() /** Fetch get response */
-
-            if(form.get('registrar_propiedad')){ /** Register main own property */
-
-                await fetch('/api/properties', {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        "user_id": result.data._id,
-                        "title": form.get('property_title') ? form.get('property_title') : 'Casa 1',
-                        "address": form.get('property_address') ? form.get('property_address') : 'Centro'
-                    })
-                })
-
-            }
-            
-            setVisible(false)
-
-            if(userData._id){ /** Modfied element on Array */
-                users[key] = result.data
-            }else{ /** Add new element data to Array */
-                users.push(result.data)
-            }
-            
-            setUsers(users) /** Change users list */
-
-        }catch(err){
-            alert(err.message)
-        }
-
-    },handleDelete = async () => { /** Delete button */
-        
-        if(!confirm('¿Estás seguro de que quieres eliminar este usuario?')){
-            return
-        }
-        
-        try {
-
-            const form = new FormData()
-            form.set('id', userData._id)
-            const response = await fetch('/api/users', {
-                method: 'DELETE',
-                body: form
-            })
-
-            if(!response.ok){
-                throw new Error('Server error request.')
-            }
-
-            setVisible(false)
-            setUsers(users.filter(user => user._id !== userData._id)) /** Reorder new Array without the element deleted */
-            
-        }catch(err){
-            alert(err.message)
-        }
-    },handleSearch = async (e) => {
+    const handleSearch = async (e) => {
         
         try {
 
@@ -137,9 +61,8 @@ export default function Template() {
         } catch (e) {
             alert(e.message)
         }
-    },setModal = (index,data) => { /* Set modal state open or close and key list */
-        setKey(index)
-        setUserData(data) /** Setting user data on form */
+    },  setModal = (_id) => { /* Set modal state open or close and key list */
+        setUserId(_id) /** Setting user id */
         setVisible(true)
     }
 
@@ -159,7 +82,7 @@ export default function Template() {
                 </fieldset>
                 <fieldset className='field-group col-2'>
                     <button type='button' onClick={() => {
-                        setModal(null, {})
+                        setModal(NaN)
                     }} className='right btn-panel'>Añadir usuario</button>
                 </fieldset>
             </div>
@@ -180,7 +103,7 @@ export default function Template() {
                     {loading ? <tr><td colSpan={6}>Cargando usuarios...</td></tr> : users.map((user, index) => (
                         <tr key={index}>
                             <td>{user.cod}</td>
-                            <td><a href='#' onClick={() => setModal(index, user)}>{`${user.surnames} ${user.names}`}</a></td>
+                            <td><a href='#' onClick={() => setModal(user._id)}>{`${user.surnames} ${user.names}`}</a></td>
                             <td>{user.alias}</td>
                             <td><Link href={`/admin/payments?cid=${user.cid}`} target='_blank'>{user.cid}</Link></td>
                             <td>{user.active ? "activo" : "inactivo"}</td>
@@ -189,6 +112,6 @@ export default function Template() {
                 </tbody>
             </table>
         </div>
-        {visible && <Modal data={userData} setModal={(val) => setVisible(val)} submit={handleSubmit} _delete={handleDelete} />}
+        {visible && <Modal set={(val) => setVisible(val)} id={user_id} _users={users} setUsers={setUsers}/>}
     </>
 }

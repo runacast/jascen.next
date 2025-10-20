@@ -3,9 +3,10 @@ import mongoose from 'mongoose'
 const { Schema } = mongoose
 
 const paymentSchema = new Schema({
-    ide: {
+    num: {
         type: Number,
-        unique: true
+        unique: true,
+        maxlength: [12]
     },
     user_id: {
         type: mongoose.Schema.Types.ObjectId,
@@ -13,8 +14,7 @@ const paymentSchema = new Schema({
         required: true
     },
     property_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Property',
+        type: Number,
         required: true
     },
     amount: {

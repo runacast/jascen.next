@@ -11,10 +11,10 @@
     },
     "dependencies": {
         "he": "^1.2.0",
-        "mongoose": "^8.16.0",
-        "next": "^15.3.3",
-        "react": "^19.1.0",
-        "react-dom": "^19.1.0",
+        "mongoose": "^8.19.1",
+        "next": "^15.5.4",
+        "react": "^19.2.0",
+        "react-dom": "^19.2.0",
         "react-markdown": "^10.1.0"
     },
     "devDependencies": {

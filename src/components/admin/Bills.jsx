@@ -2,9 +2,11 @@
 
 import { useState, useEffect } from "react"
 
-export default () => {
+export default ({ req, context }) => {
 
     const [properties, setProperties] = useState([])
+
+    console.log(req)
 
     try{
 

@@ -1,0 +1,24 @@
+/*import mongoose from 'mongoose';
+
+const { Schema } = mongoose
+
+const adminSchema = new Schema({
+    email: {
+        type: String,
+        require: true,
+        maxlength: [90]
+    },
+    password: {
+        type: String,
+        require: true,
+        maxlength: [100]
+    },
+    type: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Roles'
+    }
+})
+
+const Admin = mongoose.models.Admin || mongoose.model('Admin', adminSchema)
+
+export default Admin*/

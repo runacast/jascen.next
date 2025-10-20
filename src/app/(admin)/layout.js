@@ -5,7 +5,7 @@ import Footer from '@/components/admin/Footer'
 
 export default function AdminLayout({children}) {
 
-  return <html>
+  return <html lang={process.env.LANG}>
     <body>
       <Header />
       <div className='container'>

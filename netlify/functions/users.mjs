@@ -1,13 +1,13 @@
 import { connectDB } from '../../src/lib/db.js'
 import User from '../../src/models/User.js'
-import '../../src/models/Property.js'
 import he from 'he'
 
 export default async (req, context) => {
 
   try {
+    
+    await connectDB().catch((error) => {throw new Error(error)}) // Wait a connection to database
 
-    await connectDB() // Wait a connection to database
 
     if (req.method == 'GET') { // Get datalist from db
 
@@ -27,7 +27,6 @@ export default async (req, context) => {
         id = params.get('id'), // Find one document by _id
         cod = parseInt(params.get('codigo'), 10), // Find one document by cod
         cid = parseInt(params.get('identificacion'), 10), // Find one document by id
-        opt = params.get('propiedades'),
         page = _page = parseInt(params.get('page'), 10) ? _page : 1,
         limit = _limit = parseInt(params.get('limit'), 10) ? _limit : 0,
         skip = (page - 1) * limit // index page
@@ -72,10 +71,6 @@ export default async (req, context) => {
           users = User.find({}).skip(skip).limit(limit)
         }
 
-        if (opt) {
-          users.populate('properties', opt.replace(',',' ')) /** Add ref property collection */
-        }
-
       }
 
       /** Return json response */
@@ -90,22 +85,22 @@ export default async (req, context) => {
         }
       )
 
-    }
+    }else
 
-    /** Format data to POST and PUT */
-    const form = await req.formData() // Request FormData
+    /** Execute POST new data to DB */
 
-    if (req.method == 'POST') { /** Post new data to DB */
+    if (req.method == 'POST') {
 
-      const total = await User.countDocuments()
-
-      const user = new User({ /** Format user data */
+      const form = await req.formData(), // Request FormData
+      total = await User.countDocuments(),
+      user = new User({ /** Format user data */
         cid: parseInt(form.get('identificacion'), 10),
         cod: total + 1,
         user_type: (he.escape(form.get('persona')).toLowerCase()).trim(),
         surnames: (he.escape(form.get('apellidos'))).trim(),
         names: (he.escape(form.get('nombres'))).trim(),
         alias: (he.escape(form.get('alias'))).trim(),
+        properties: [],
         phone: (he.escape(form.get('telefono'))).trim(),
         email: (he.escape(form.get('correo_electronico'))).trim()
       })
@@ -116,10 +111,26 @@ export default async (req, context) => {
         throw err
       }
 
+      let properties = parseFormData(form, 'propiedad')
+
+      if(properties.length){
+
+        properties.forEach((property, index) => {
+          user.properties[index] = {
+            title: property.titulo,
+            address: property.direccion
+          }
+        })
+
+      }
+
       await user.save()
 
       return new Response(
-        JSON.stringify({ message: 'User inserted', data: user.toObject() }),
+        JSON.stringify({
+          message: 'User inserted',
+          data: user.toObject()
+        }),
         {
           status: 201,
           headers: {
@@ -130,15 +141,18 @@ export default async (req, context) => {
       )
 
     } else
-      if (req.method == 'PUT') { /** Update data to collection on DB */
+      /** Update data to collection on DB */
+      if (req.method == 'PUT') { 
 
-        const data = { /** Format user data */
+        const form = await req.formData(), // Request FormData
+        data = { /** Format user data */
           cid: parseInt(form.get('identificacion'), 10),
           cod: parseInt(form.get('codigo'), 10),
           user_type: (he.escape(form.get('persona')).toLowerCase()).trim(),
           surnames: (he.escape(form.get('apellidos'))).trim(),
           names: (he.escape(form.get('nombres'))).trim(),
           alias: (he.escape(form.get('alias'))).trim(),
+          properties: [],
           phone: (he.escape(form.get('telefono'))).trim(),
           email: (he.escape(form.get('correo_electronico'))).trim(),
           active: Boolean(Number(form.get('estado')))
@@ -150,10 +164,34 @@ export default async (req, context) => {
           throw err
         }
 
+        let properties = parseFormData(form, 'propiedad')
+
+        if (properties.length) { /** Delele properties */
+
+          properties.forEach((property, index) => {
+
+            data.properties[index] = {
+              title: property.titulo,
+              address: property.direccion
+            }
+
+            if(property.id){
+              data.properties[index]._id = property.id
+            }
+
+          })
+
+        }
+
+        console.log(data)
+
         const result = await User.updateOne({ _id: form.get('id') }, data)
 
         return new Response(
-          JSON.stringify({ message: 'User modified!', data: { _id: form.get('id'), ...data } }),
+          JSON.stringify({
+            message: 'User modified!', 
+            data: { _id: form.get('id'), ...data }
+          }),
           {
             status: 200,
             headers: {
@@ -165,6 +203,8 @@ export default async (req, context) => {
 
       } else
         if (req.method == 'DELETE') { /** Delete element by ID */
+
+          const form = await req.formData() // Request FormData
 
           await User.deleteOne({ _id: form.get('id') })
 
@@ -181,6 +221,7 @@ export default async (req, context) => {
         }
 
   } catch (e) {
+
     return new Response(
       JSON.stringify({ error: e.message }),
       {
@@ -190,6 +231,31 @@ export default async (req, context) => {
         }
       }
     )
+
   }
 
+}
+
+const parseFormData = (formData, keyword = '') => {
+
+  const list = [];
+
+  for (let [key, value] of formData.entries()) {
+
+    const matches = key.match(/[^[\]]+/g)
+
+    if(keyword && matches[0] == keyword){
+
+      const field = matches[matches.length - 1]
+
+      if (!list.length || list[list.length - 1][field] !== undefined) {
+        list.push({})
+      }
+      
+      list[list.length - 1][field] = value
+
+    }
+  }
+
+  return list;
 }

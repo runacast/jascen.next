@@ -3,14 +3,16 @@
 import { useEffect, useState, useRef } from 'react'
 import Modal from '@/components/admin/payments/Modal'
 import {Months, start_year, start_month} from '@/lib/payments'
+import { useSearchParams } from 'next/navigation'
 
-export default function Template(){
-
+export default () => {
+    
+    const searchParams = useSearchParams()
     const searchForm = useRef(null),
     [payments, setPayments] = useState([]),
     [visible, setVisible] = useState(false),
     [note, setNote] = useState({}),
-    cid = 0
+    cid = searchParams.get('cid')
 
     useEffect(() => {
 

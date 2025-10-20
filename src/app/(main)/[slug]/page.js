@@ -30,7 +30,7 @@ export default async function Page({ params, searchParams }) {
     const page = get((await params).slug)
 
     if (!page) {
-      throw new Error('Imash Illan kaypi 404.')
+      throw new Error('Error 404.')
     }
 
     return <div className='container'>

@@ -35,6 +35,18 @@ const userSchema = new Schema({
     default: null,
     maxlength: [150]
   },
+  properties: Array({
+    title: {
+        type: String,
+        require: true,
+        maxlength: [50]
+    },
+    address: {
+        type: String,
+        require: true,
+        maxlength: [120]
+    }
+  }),
   phone: {
     type: String,
     require: false,
@@ -52,15 +64,6 @@ const userSchema = new Schema({
     default: true
   }
 })
-
-// Virtual para poblar propiedades (opcional, pero útil)
-userSchema.virtual('properties', {
-  ref: 'Property',
-  localField: '_id',
-  foreignField: 'user_id'
-})
-
-userSchema.set('toJSON', { virtuals: true }) // Incluye virtuals en toJSON
 
 const User = mongoose.models.User || mongoose.model('User', userSchema)
 

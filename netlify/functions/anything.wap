@@ -1,5 +1,4 @@
 import { connectDB } from '../../src/lib/db.js'
-import Property from '../../src/models/Property.js'
 import he from 'he' /** He escaping HTML and javascript coding */
 
 export default async (req, context) => {
@@ -18,9 +17,9 @@ export default async (req, context) => {
             options = params.get('options')
 
             if (id) {
-                property = Property.findById(id)
+                
             }else if (user_id) {
-                property = Property.findOne({user_id})
+                
             }else{
                 
                 filter.push({
@@ -33,17 +32,11 @@ export default async (req, context) => {
                     }
                 })
 
-                property = Property.aggregate(filter)
+                
             }
-
-            if (options) {
-                property.select(options.replace(',',' '))
-            }
-
-            const result = await property
 
             return new Response(
-                JSON.stringify(result),
+                JSON.stringify({}),
                 {
                     status: 200,
                     headers: {
@@ -59,18 +52,10 @@ export default async (req, context) => {
 
         if(req.method == 'POST'){
 
-            const {user_id, title, address} = await req.json()
-
-            const property = new Property({
-                user_id,
-                title: he.escape(title).trim(),
-                address: he.escape(address).trim()
-            })
-
-            await property.save()
+            const form = await req.formData()
 
             return new Response(
-                JSON.stringify({ message: 'Property added', data: property.toObject() }),
+                JSON.stringify({}/*{ message: 'Property added', data: property.toObject() }*/),
                 {
                     status: 201,
                     headers: {
@@ -92,12 +77,12 @@ export default async (req, context) => {
                     address: he.escape(address).trim(),
                     updated_at: Date.now()
                 }
-            
-            await Property.updateOne({_id}, data)
 
             return new Response(
-                JSON.stringify({ message: 'Property updated', data: {_id, ...data} }),
-                {
+                JSON.stringify({ 
+                    message: 'Property updated', 
+                    data: {} 
+                }),{
                     status: 200,
                     headers: {
                         'Content-Type': 'application/json',

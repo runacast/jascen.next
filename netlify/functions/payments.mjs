@@ -1,12 +1,13 @@
 import { connectDB } from '../../src/lib/db.js'
 import Payment from '../../src/models/Payment.js'
 
-const handler = async (event) => {
+export default async (req, context) => {
   
   try{
     
-    await connectDB()
-    const method = event.httpMethod
+    await connectDB().catch((err) => {throw new Error(err)})
+
+    const method = req.method
 
     if (method == 'GET') {
       
@@ -68,5 +69,3 @@ const handler = async (event) => {
   }
 
 }
-
-export { handler }
