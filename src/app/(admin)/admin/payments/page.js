@@ -1,6 +1,9 @@
 import Payments from '@/components/admin/Payments'
+import { connection } from 'next/server'
 
 export default async () => {
+
+    await connection()
 
     const date = new Date()
 
